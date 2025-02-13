@@ -1,0 +1,13 @@
+{
+  "name": "sonicjs-latest",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "sonicjs-latest",
+      "database_id": "3e186f93-8064-4279-869e-d57a601b8989",
+    },
+  ],
+  "vars": {
+    "SENTRY_AUTH_TOKEN": "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",
+  },
+}
