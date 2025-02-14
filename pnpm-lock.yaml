@@ -74,6 +74,9 @@ importers:
       pino:
         specifier: ^9.6.0
         version: 9.6.0
+      pino-sentry:
+        specifier: ^0.15.0
+        version: 0.15.0
       pino-sentry-transport:
         specifier: ^1.4.0
         version: 1.4.0(@sentry/node@9.1.0)(pino@9.6.0)
@@ -141,6 +144,9 @@ importers:
       typescript-eslint:
         specifier: ^8.24.0
         version: 8.24.0(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3)
+      vite:
+        specifier: ^6.1.0
+        version: 6.1.0(@types/node@22.13.2)(jiti@2.4.2)(lightningcss@1.29.1)(yaml@2.7.0)
       vitest:
         specifier: ^3.0.5
         version: 3.0.5(@types/debug@4.1.12)(@types/node@22.13.2)(jiti@2.4.2)(lightningcss@1.29.1)(yaml@2.7.0)
@@ -1516,6 +1522,10 @@ packages:
     resolution: {integrity: sha512-E2xrUoms90qvm0BVOuaZ8QfkMoTUEgoIW/35uOeaqNcL7uOIj8c5cSEQQKit2Dr7CL6W+Ci5c6Khdyd5C0NL5w==}
     engines: {node: '>=18'}
 
+  '@sentry-internal/tracing@7.120.3':
+    resolution: {integrity: sha512-Ausx+Jw1pAMbIBHStoQ6ZqDZR60PsCByvHdw/jdH9AqPrNE9xlBSf9EwcycvmrzwyKspSLaB52grlje2cRIUMg==}
+    engines: {node: '>=8'}
+
   '@sentry/astro@9.1.0':
     resolution: {integrity: sha512-k9Cs4NZcfjRLnN701TOqFAonljPC5A+5yYgNlcWVOeHEnx5yuB8gxLw/jW2b4YdhagSGaU0hhPyJ86ElDfCrJA==}
     engines: {node: '>=18.19.1'}
@@ -1580,9 +1590,21 @@ packages:
     engines: {node: '>= 10'}
     hasBin: true
 
+  '@sentry/core@7.120.3':
+    resolution: {integrity: sha512-vyy11fCGpkGK3qI5DSXOjgIboBZTriw0YDx/0KyX5CjIjDDNgp5AGgpgFkfZyiYiaU2Ww3iFuKo4wHmBusz1uA==}
+    engines: {node: '>=8'}
+
   '@sentry/core@9.1.0':
     resolution: {integrity: sha512-djWEzSBpMgqdF3GQuxO+kXCUX+Mgq42G4Uah/HSUBvPDHKipMmyWlutGRoFyVPPOnCDgpHu3wCt83wbpEyVmDw==}
     engines: {node: '>=18'}
+
+  '@sentry/integrations@7.120.3':
+    resolution: {integrity: sha512-6i/lYp0BubHPDTg91/uxHvNui427df9r17SsIEXa2eKDwQ9gW2qRx5IWgvnxs2GV/GfSbwcx4swUB3RfEWrXrQ==}
+    engines: {node: '>=8'}
+
+  '@sentry/node@7.120.3':
+    resolution: {integrity: sha512-t+QtekZedEfiZjbkRAk1QWJPnJlFBH/ti96tQhEq7wmlk3VszDXraZvLWZA0P2vXyglKzbWRGkT31aD3/kX+5Q==}
+    engines: {node: '>=8'}
 
   '@sentry/node@9.1.0':
     resolution: {integrity: sha512-Xf9N0rpZ+lf3kA/MBa0yA7/wBd+dW8QhBav2YmM2GpqrrZ+3HtP6sT0N9+D3qADUYTn0RE2MNo8yaiaM6/FfPw==}
@@ -1598,6 +1620,14 @@ packages:
       '@opentelemetry/instrumentation': ^0.57.1
       '@opentelemetry/sdk-trace-base': ^1.30.1
       '@opentelemetry/semantic-conventions': ^1.28.0
+
+  '@sentry/types@7.120.3':
+    resolution: {integrity: sha512-C4z+3kGWNFJ303FC+FxAd4KkHvxpNFYAFN8iMIgBwJdpIl25KZ8Q/VdGn0MLLUEHNLvjob0+wvwlcRBBNLXOow==}
+    engines: {node: '>=8'}
+
+  '@sentry/utils@7.120.3':
+    resolution: {integrity: sha512-UDAOQJtJDxZHQ5Nm1olycBIsz2wdGX8SdzyGVHmD8EOQYAeDZQyIlQYohDe9nazdIOQLZCIc3fU0G9gqVLkaGQ==}
+    engines: {node: '>=8'}
 
   '@sentry/vite-plugin@2.23.0':
     resolution: {integrity: sha512-iLbqxan3DUkFJqbx7DOtJ2fTd6g+TmNS1PIdaDFfpvVG4Lg9AYp4Xege6BBCrGQYl+wUE3poWfNhASfch/s51Q==}
@@ -2323,6 +2353,9 @@ packages:
   comma-separated-tokens@2.0.3:
     resolution: {integrity: sha512-Fu4hJdvzeylCfQPp9SGWidpzrMs7tTrlu6Vb8XGaRGck8QSNZJJp538Wrb60Lax4fPwR64ViY468OIUTbRlGZg==}
 
+  commander@2.20.3:
+    resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
+
   common-ancestor-path@1.0.1:
     resolution: {integrity: sha512-L3sHRo1pXXEqX8VU28kfgUY+YGsk09hPqZiZmLacNib6XNTCM8ubYeT7ryXQw8asB1sKgcU5lkB7ONug08aB8w==}
 
@@ -2569,6 +2602,9 @@ packages:
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
     engines: {node: '>= 0.4'}
+
+  duplexify@4.1.3:
+    resolution: {integrity: sha512-M3BmBhwJRZsSx38lZyhE53Csddgzl5R7xGJNk7CVddZD6CcmwMCH8J+7AprIrQKH7TonKxaCjcv27Qmf+sQ+oA==}
 
   electron-to-chromium@1.5.98:
     resolution: {integrity: sha512-bI/LbtRBxU2GzK7KK5xxFd2y9Lf9XguHooPYbcXWy6wUoT8NMnffsvRhPmSeUHLSDKAEtKuTaEtK4Ms15zkIEA==}
@@ -3074,6 +3110,9 @@ packages:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
     engines: {node: '>= 4'}
 
+  immediate@3.0.6:
+    resolution: {integrity: sha512-XXOFtyqDjNDAQxVfYxuF7g9Il/IbWmmlQg2MYKOH8ExIT1qg6xc4zyS3HaEEATgs1btfzxq15ciUiY7gjSXRGQ==}
+
   import-fresh@3.3.1:
     resolution: {integrity: sha512-TR3KfrTZTYLPB6jUjfx6MF9WcWrHL9su5TObK4ZkYgBdWKPOFoSoQIdEuTuR82pmtxH2spWG9h6etwfr1pLBqQ==}
     engines: {node: '>=6'}
@@ -3330,6 +3369,9 @@ packages:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
     engines: {node: '>= 0.8.0'}
 
+  lie@3.1.1:
+    resolution: {integrity: sha512-RiNhHysUjhrDQntfYSfY4MU24coXXdEOgw9WGcKHNeEwffDYbF//u87M1EWaMGzuFoSbqW0C9C6lEEhDOAswfw==}
+
   lightningcss-darwin-arm64@1.29.1:
     resolution: {integrity: sha512-HtR5XJ5A0lvCqYAoSv2QdZZyoHNttBpa5EP9aNuzBQeKGfbyH5+UipLWvVzpP4Uml5ej4BYs5I9Lco9u1fECqw==}
     engines: {node: '>= 12.0.0'}
@@ -3405,6 +3447,9 @@ packages:
   load-yaml-file@0.2.0:
     resolution: {integrity: sha512-OfCBkGEw4nN6JLtgRidPX6QxjBQGQf72q3si2uvqyFEMbycSFFHwAZeXx6cJgFM9wmLrf9zBwCP3Ivqa+LLZPw==}
     engines: {node: '>=6'}
+
+  localforage@1.10.0:
+    resolution: {integrity: sha512-14/H1aX7hzBBmmh7sGPd+AOMkkIrHM3Z1PAyGgZigA1H1p5O5ANnMyWzvpAETtG68/dC4pC0ncy3+PPGzXZHPg==}
 
   locate-path@5.0.0:
     resolution: {integrity: sha512-t7hw9pI+WvuwNJXwk5zVHpyhIqzg2qTlklJOf0mVxGSbe3Fp2VieZcduNYjaLDoy6p9uGpQEGWG87WpMKlNq8g==}
@@ -3948,6 +3993,11 @@ packages:
       '@sentry/node': ^7.0.0 || ^8.0.0
       pino: ^7.0.0 || ^8.0.0 || ^9.0.0
 
+  pino-sentry@0.15.0:
+    resolution: {integrity: sha512-30AXRBO1RzYjDgpm79maDmQdFPeYUZWKCm5mwDyIxTF5NwGjXhUAeb5dSmT/GD5YvD73V1uTi9KltyQu7hNsng==}
+    engines: {node: '>=10'}
+    hasBin: true
+
   pino-std-serializers@7.0.0:
     resolution: {integrity: sha512-e906FRY0+tV27iq4juKzSYPbUj2do2X2JX4EzSca1631EB2QJQUqGbDuERal7LCtOpxl6x3+nvo9NPZcmjkiFA==}
 
@@ -4067,6 +4117,9 @@ packages:
 
   pump@3.0.2:
     resolution: {integrity: sha512-tUPXtzlGM8FE3P0ZL6DVs/3P58k9nk8/jZeQCurTJylQA8qFYzHFfhBJkuqyE0FifOsQ0uKWekiZ5g8wtr28cw==}
+
+  pumpify@2.0.1:
+    resolution: {integrity: sha512-m7KOje7jZxrmutanlkS1daj1dS6z6BgslzOXmcSEpIlCxM3VJH7lG5QLeck/6hgF6F4crFf01UtQmNsJfweTAw==}
 
   punycode@2.3.1:
     resolution: {integrity: sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==}
@@ -4415,6 +4468,9 @@ packages:
   spdx-license-ids@3.0.21:
     resolution: {integrity: sha512-Bvg/8F5XephndSK3JffaRqdT+gyhfqIPwDHpX80tJrF8QQRYMo8sNMeaZ2Dp5+jhwKnUmIOyFFQfHRkjJm5nXg==}
 
+  split2@3.2.2:
+    resolution: {integrity: sha512-9NThjpgZnifTkJpzTZ7Eue85S49QwpNhZTq6GRJwObb6jnLFNGB7Qm73V5HewTROPyxD0C29xqmaI68bQtV+hg==}
+
   split2@4.2.0:
     resolution: {integrity: sha512-UcjcJOWknrNkF6PLX83qcHM6KHgVKNkV62Y8a5uYDVv9ydGQVwAHMKqHdJje1VTWpljG0WYpCDhrCdAOYH4TWg==}
     engines: {node: '>= 10.x'}
@@ -4434,6 +4490,9 @@ packages:
   stoppable@1.1.0:
     resolution: {integrity: sha512-KXDYZ9dszj6bzvnEMRYvxgeTHU74QBFL54XKtP3nyMuJ81CFYtABZ3bAzL2EdFUaEwJOBOgENyFj3R7oTzDyyw==}
     engines: {node: '>=4', npm: '>=6'}
+
+  stream-shift@1.0.3:
+    resolution: {integrity: sha512-76ORR0DO1o1hlKwTbi/DM3EXWGf3ZJYO8cXX5RJwnul2DEg2oyoZyjLNoQM8WsvZiFKCRfC1O0J7iCvie3RZmQ==}
 
   string-width@4.2.3:
     resolution: {integrity: sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==}
@@ -4532,6 +4591,9 @@ packages:
 
   thread-stream@3.1.0:
     resolution: {integrity: sha512-OqyPZ9u96VohAyMfJykzmivOrY2wfMSf3C5TtFJVgN+Hm6aj+voFhlK+kZEIv2FBh1X6Xp3DlnCOfEQ3B2J86A==}
+
+  through2@3.0.2:
+    resolution: {integrity: sha512-enaDQ4MUyP2W6ZyT6EsMzqBPZaM/avg8iuo+l2d3QCs0J+6RaqkHV/2/lOwDTueBHeJ/2LG9lrLW3d5rWPucuQ==}
 
   tiny-glob@0.2.9:
     resolution: {integrity: sha512-g/55ssRPUjShh+xkfx9UPDXqhckHEsHr4Vd9zX55oSdGZc/MD0m3sferOkwWtp98bv+kcVfEHtRJgBVJzelrzg==}
@@ -6370,6 +6432,12 @@ snapshots:
       '@sentry-internal/browser-utils': 9.1.0
       '@sentry/core': 9.1.0
 
+  '@sentry-internal/tracing@7.120.3':
+    dependencies:
+      '@sentry/core': 7.120.3
+      '@sentry/types': 7.120.3
+      '@sentry/utils': 7.120.3
+
   '@sentry/astro@9.1.0(astro@5.3.0(@types/node@22.13.2)(jiti@2.4.2)(lightningcss@1.29.1)(rollup@4.34.6)(typescript@5.7.3)(yaml@2.7.0))':
     dependencies:
       '@sentry/browser': 9.1.0
@@ -6445,7 +6513,27 @@ snapshots:
       - encoding
       - supports-color
 
+  '@sentry/core@7.120.3':
+    dependencies:
+      '@sentry/types': 7.120.3
+      '@sentry/utils': 7.120.3
+
   '@sentry/core@9.1.0': {}
+
+  '@sentry/integrations@7.120.3':
+    dependencies:
+      '@sentry/core': 7.120.3
+      '@sentry/types': 7.120.3
+      '@sentry/utils': 7.120.3
+      localforage: 1.10.0
+
+  '@sentry/node@7.120.3':
+    dependencies:
+      '@sentry-internal/tracing': 7.120.3
+      '@sentry/core': 7.120.3
+      '@sentry/integrations': 7.120.3
+      '@sentry/types': 7.120.3
+      '@sentry/utils': 7.120.3
 
   '@sentry/node@9.1.0':
     dependencies:
@@ -6495,6 +6583,12 @@ snapshots:
       '@opentelemetry/sdk-trace-base': 1.30.1(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.30.0
       '@sentry/core': 9.1.0
+
+  '@sentry/types@7.120.3': {}
+
+  '@sentry/utils@7.120.3':
+    dependencies:
+      '@sentry/types': 7.120.3
 
   '@sentry/vite-plugin@2.23.0':
     dependencies:
@@ -7462,6 +7556,8 @@ snapshots:
 
   comma-separated-tokens@2.0.3: {}
 
+  commander@2.20.3: {}
+
   common-ancestor-path@1.0.1: {}
 
   concat-map@0.0.1: {}
@@ -7611,6 +7707,13 @@ snapshots:
       call-bind-apply-helpers: 1.0.2
       es-errors: 1.3.0
       gopd: 1.2.0
+
+  duplexify@4.1.3:
+    dependencies:
+      end-of-stream: 1.4.4
+      inherits: 2.0.4
+      readable-stream: 3.6.2
+      stream-shift: 1.0.3
 
   electron-to-chromium@1.5.98: {}
 
@@ -8358,6 +8461,8 @@ snapshots:
 
   ignore@5.3.2: {}
 
+  immediate@3.0.6: {}
+
   import-fresh@3.3.1:
     dependencies:
       parent-module: 1.0.1
@@ -8597,6 +8702,10 @@ snapshots:
       prelude-ls: 1.2.1
       type-check: 0.4.0
 
+  lie@3.1.1:
+    dependencies:
+      immediate: 3.0.6
+
   lightningcss-darwin-arm64@1.29.1:
     optional: true
 
@@ -8657,6 +8766,10 @@ snapshots:
       js-yaml: 3.14.1
       pify: 4.0.1
       strip-bom: 3.0.0
+
+  localforage@1.10.0:
+    dependencies:
+      lie: 3.1.1
 
   locate-path@5.0.0:
     dependencies:
@@ -9371,6 +9484,14 @@ snapshots:
       pino: 9.6.0
       pino-abstract-transport: 1.2.0
 
+  pino-sentry@0.15.0:
+    dependencies:
+      '@sentry/node': 7.120.3
+      commander: 2.20.3
+      pumpify: 2.0.1
+      split2: 3.2.2
+      through2: 3.0.2
+
   pino-std-serializers@7.0.0: {}
 
   pino@9.6.0:
@@ -9494,6 +9615,12 @@ snapshots:
     dependencies:
       end-of-stream: 1.4.4
       once: 1.4.0
+
+  pumpify@2.0.1:
+    dependencies:
+      duplexify: 4.1.3
+      inherits: 2.0.4
+      pump: 3.0.2
 
   punycode@2.3.1: {}
 
@@ -9957,6 +10084,10 @@ snapshots:
 
   spdx-license-ids@3.0.21: {}
 
+  split2@3.2.2:
+    dependencies:
+      readable-stream: 3.6.2
+
   split2@4.2.0: {}
 
   sprintf-js@1.0.3: {}
@@ -9971,6 +10102,8 @@ snapshots:
   std-env@3.8.0: {}
 
   stoppable@1.1.0: {}
+
+  stream-shift@1.0.3: {}
 
   string-width@4.2.3:
     dependencies:
@@ -10105,6 +10238,11 @@ snapshots:
   thread-stream@3.1.0:
     dependencies:
       real-require: 0.2.0
+
+  through2@3.0.2:
+    dependencies:
+      inherits: 2.0.4
+      readable-stream: 3.6.2
 
   tiny-glob@0.2.9:
     dependencies:

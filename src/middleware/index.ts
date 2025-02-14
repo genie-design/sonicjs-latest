@@ -3,8 +3,9 @@ import { initializeConfig } from "@/services/auth/config";
 import { Auth } from "@/services/auth/auth";
 import { count } from "drizzle-orm";
 import { table as userSchema } from "@/db/schema/users";
-import type { APIContext } from "astro";
-import pino, { type LoggerOptions } from "pino";
+import pino, { multistream } from "pino";
+import { createWriteStream, Severity } from "pino-sentry";
+
 export const onRequest = defineMiddleware(async (context, next) => {
   const config = initializeConfig(
     context.locals.runtime.env.DB,
@@ -18,6 +19,8 @@ export const onRequest = defineMiddleware(async (context, next) => {
   // Check if we're already on the login or register page
   const isAuthPage = context.url.pathname.match(/^\/admin\/(login|register)/);
 
+  context.locals.logger = setupLogger();
+  context.locals.logger.trace("Logger initialized");
   try {
     if (sessionId) {
       // Validate the session
@@ -27,6 +30,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
         // If user is logged in and tries to access login/register, redirect to admin
         if (isAuthPage) {
+          context.locals.logger.trace("Redirecting to admin");
           return context.redirect("/admin");
         }
 
@@ -36,6 +40,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
     // Don't redirect if already on auth pages
     if (isAuthPage) {
+      context.locals.logger.trace("Already on auth pages");
       return next();
     }
 
@@ -46,8 +51,10 @@ export const onRequest = defineMiddleware(async (context, next) => {
         .from(userSchema);
 
       if (usersCount[0].count === 0) {
+        context.locals.logger.trace("Redirecting to register");
         return context.redirect("/admin/register");
       }
+      context.locals.logger.trace("Redirecting to login");
       return context.redirect("/admin/login");
     }
   } catch (error) {
@@ -64,36 +71,53 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
     // Redirect to login for protected routes
     if (context.url.pathname.startsWith("/admin")) {
+      context.locals.logger.trace("Redirecting to login");
       return context.redirect("/admin/login");
     }
   }
 
-  context.locals.logger = setupLogger(context);
-  context.locals.logger.info("Middleware initialized");
-  context.locals.logger.warn("Middleware warning");
   return next();
 });
 
-function setupLogger(context: APIContext) {
-  const env = context.locals.runtime.env;
-  const pinoConfig: LoggerOptions = {};
-  if (env.SENTRY_DSN) {
-    const sentryConfig = {
-      dsn: env.SENTRY_DSN,
-      tracesSampleRate: 1.0,
-    };
-    pinoConfig.transport = {
-      target: "pino-sentry-transport",
-      options: {
-        sentry: sentryConfig,
-        withLogRecord: false, // default false - send the entire log record to sentry as a context.(FYI if its more then 8Kb Sentry will throw an error)
-        tags: ["level"], // sentry tags to add to the event, uses lodash.get to get the value from the log record
-        context: ["hostname"], // sentry context to add to the event, uses lodash.get to get the value from the log record,
-        minLevel: 40, // which level to send to sentry
-        expectPinoConfig: false, // default false - pass true if pino configured with custom messageKey or errorKey see below
-      },
-    };
+function setupLogger() {
+  const env = import.meta.env;
+  const streams = [];
+
+  // Add console stream
+  streams.push({
+    level: env.DEV ? "trace" : "warn",
+    stream: process.stdout,
+  });
+
+  // Add Sentry stream if DSN is configured
+  if (env.PUBLIC_SENTRY_DSN) {
+    const sentryStream = createWriteStream({
+      dsn: env.PUBLIC_SENTRY_DSN,
+      environment: env.NODE_ENV || "production",
+      serverName: "sonicjs",
+      debug: env.PUBLIC_SENTRY_DEBUG === "true",
+      sampleRate: 1.0,
+      maxBreadcrumbs: 100,
+      level: Severity.Warning,
+      maxValueLength: 250,
+      sentryExceptionLevels: [Severity.Warning, Severity.Error, Severity.Fatal],
+    });
+    streams.push({
+      level: "warn",
+      stream: sentryStream,
+    });
   }
 
-  return pino(pinoConfig);
+  // Create logger with multiple streams
+  return pino(
+    {
+      level: env.DEV ? "trace" : "warn",
+      formatters: {
+        level: (label) => {
+          return { level: label };
+        },
+      },
+    },
+    multistream(streams),
+  );
 }

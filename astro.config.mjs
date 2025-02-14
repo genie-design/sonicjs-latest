@@ -8,7 +8,10 @@ import cloudflare from "@astrojs/cloudflare";
 import tailwindcss from "@tailwindcss/vite";
 
 import sentry from "@sentry/astro";
-
+import { loadEnv } from "vite";
+// @ts-expect-error process is not defined
+// eslint-disable-next-line no-undef
+const env = loadEnv(process.env.NODE_ENV, process.cwd(), "");
 // https://astro.build/config
 export default defineConfig({
   output: "server",
@@ -19,13 +22,9 @@ export default defineConfig({
       },
     }),
     sentry({
-      dsn: "https://00c82a9fe26c1f34d1e5a5b8747bc463@o4504414345166848.ingest.us.sentry.io/4508813188792320",
-      replaysSessionSampleRate: 0,
-      replaysOnErrorSampleRate: 0,
       sourceMapsUploadOptions: {
         project: "sonicjs",
-        // eslint-disable-next-line no-undef
-        authToken: process.env.SENTRY_AUTH_TOKEN,
+        authToken: env.SENTRY_AUTH_TOKEN,
       },
     }),
   ],
