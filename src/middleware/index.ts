@@ -69,6 +69,8 @@ export const onRequest = defineMiddleware(async (context, next) => {
   }
 
   context.locals.logger = setupLogger(context);
+  context.locals.logger.info("Middleware initialized");
+  context.locals.logger.warn("Middleware warning");
   return next();
 });
 

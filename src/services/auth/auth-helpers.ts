@@ -7,7 +7,7 @@ import {
   schema,
   tableSchemas,
 } from "@/db/routes";
-import { getRecordsByTableAndParams } from "@/services/data";
+import { getRecordByTableAndId } from "@/services/data";
 
 export const hasUser = async (ctx: APIContext) => {
   const db = drizzle(ctx.locals.runtime.env.DB, schema);
@@ -50,7 +50,7 @@ export async function getApiAccessControlResult(
       itemAccessControl,
       ctx,
       args[0] as string,
-      args[1] as string,
+      args[1] as keyof typeof tableSchemas,
       args[2],
     );
   }
@@ -206,14 +206,7 @@ export async function getItemAccessControlResult(
   if (typeof itemAccessControl === "boolean") {
     authorized = itemAccessControl;
   } else if (id && table && typeof itemAccessControl === "function") {
-    const doc = await getRecordsByTableAndParams(
-      ctx,
-      table,
-      { id },
-      undefined,
-      undefined,
-      `itemAccessControl/${table}/${id}`,
-    );
+    const doc = await getRecordByTableAndId(ctx, table, id);
 
     if (data) {
       authorized = !!(await getAccessControlResult(
@@ -259,13 +252,13 @@ export async function getItemUpdateResult(
   ctx: APIContext,
   id: string,
   data: unknown,
-  table: string,
+  table: keyof typeof tableSchemas,
 ) {
   let authorized: boolean | SonicJSFilter = true;
   if (typeof update !== "function") {
     authorized = update;
   } else {
-    const doc = await getRecords(ctx, table, { id }, `doc/${table}/${id}`);
+    const doc = await getRecordByTableAndId(ctx, table, id);
 
     authorized = await getAccessControlResult(update, ctx, id, data, doc);
   }
@@ -276,13 +269,13 @@ export async function getItemDeleteResult(
   del: ItemDelete,
   ctx: APIContext,
   id: string,
-  table: string,
+  table: keyof typeof tableSchemas,
 ) {
   let authorized: boolean | SonicJSFilter = true;
   if (typeof del !== "function") {
     authorized = del;
   } else {
-    const doc = await getRecords(ctx, table, { id }, `doc/${table}/${id}`);
+    const doc = await getRecordByTableAndId(ctx, table, id);
 
     authorized = await getAccessControlResult(del, ctx, id, doc);
   }

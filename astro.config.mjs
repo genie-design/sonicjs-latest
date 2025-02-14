@@ -11,6 +11,7 @@ import sentry from "@sentry/astro";
 
 // https://astro.build/config
 export default defineConfig({
+  output: "server",
   integrations: [
     react({
       babel: {
@@ -23,6 +24,7 @@ export default defineConfig({
       replaysOnErrorSampleRate: 0,
       sourceMapsUploadOptions: {
         project: "sonicjs",
+        // eslint-disable-next-line no-undef
         authToken: process.env.SENTRY_AUTH_TOKEN,
       },
     }),
@@ -31,5 +33,10 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
+    resolve: {
+      alias: {
+        "@": "/src",
+      },
+    },
   },
 });
