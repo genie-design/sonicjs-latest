@@ -22,7 +22,7 @@ Astro Project Structure
 Component Development
 
 - Create .astro files for Astro components.
-- Use framework-specific components (React, Vue, Svelte) when necessary.
+- Use framework-specific components (React ) when necessary.
 - Implement proper component composition and reusability.
 - Use Astro's component props for data passing.
 - Leverage Astro's built-in components like <Markdown /> when appropriate.
