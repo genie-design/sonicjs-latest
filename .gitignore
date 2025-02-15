@@ -22,3 +22,8 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+wrangler.toml
+wrangler.json
+wrangler.jsonc
+.env
