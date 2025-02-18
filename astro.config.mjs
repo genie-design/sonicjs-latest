@@ -14,7 +14,6 @@ import { loadEnv } from "vite";
 const env = loadEnv(process.env.NODE_ENV, process.cwd(), "");
 // https://astro.build/config
 export default defineConfig({
-  output: "server",
   integrations: [
     react({
       babel: {

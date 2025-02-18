@@ -1,0 +1,75 @@
+---
+import Layout from './Layout.astro';
+---
+
+<Layout>
+  <!-- Desktop Layout Container -->
+  <div class="relative min-h-screen">
+    <!-- Mobile Navigation (hidden on desktop) -->
+    <nav
+      class="bg-base-200/50 mb-4 w-full rounded-lg p-4 backdrop-blur-sm lg:hidden"
+    >
+      <div class="flex items-center justify-between">
+        <div class="text-2xl font-bold">Logo</div>
+        <button class="btn btn-ghost btn-circle" aria-label="Toggle Menu">
+          Menu
+        </button>
+      </div>
+    </nav>
+
+    <!-- Main Layout Grid -->
+    <div class="grid min-h-screen gap-4 p-4 lg:grid-cols-[500px_1fr_500px]">
+      <div>
+        <!-- Left Sidebar -->
+        <nav class="hidden space-y-4 lg:block">
+          <ul
+            class="border-accent flex justify-around gap-4 rounded-3xl border p-6 backdrop-blur-sm"
+          >
+            <li><a href="/" class="link link-hover">Home</a></li>
+            <li><a href="/about" class="link link-hover">About</a></li>
+            <li><a href="/products" class="link link-hover">Products</a></li>
+            <li><a href="/contact" class="link link-hover">Contact</a></li>
+          </ul>
+        </nav>
+        <div class="bg-base-200/50 rounded-2xl p-6 backdrop-blur-sm">
+          <h2 class="mb-4 text-xl font-bold">Featured</h2>
+          <p class="text-base-content/80">
+            Discover our latest innovations in bionic technology.
+          </p>
+        </div>
+      </div>
+
+      <!-- Main Content Area -->
+      <main class="bg-secondary min-h-[80vh] rounded-3xl p-8 backdrop-blur-sm">
+        <slot />
+      </main>
+
+      <!-- Right Sidebar -->
+      <div class="space-y-4">
+        <nav class="hidden gap-4 lg:block">
+          <ul
+            class="border-accent flex justify-around gap-4 rounded-3xl border p-6 backdrop-blur-sm"
+          >
+            <li>
+              <button class="btn btn-primary">
+                <span>Contact</span>
+              </button>
+            </li>
+            <li>
+              <button class="btn btn-ghost btn-circle">
+                <span class="icon-[solar--user-circle-outline] text-4xl"></span>
+              </button>
+            </li>
+          </ul>
+        </nav>
+        <!-- Right Content Area -->
+        <div class="bg-base-200/50 rounded-2xl p-6 backdrop-blur-sm">
+          <h2 class="mb-4 text-xl font-bold">Updates</h2>
+          <p class="text-base-content/80">
+            Stay informed about our latest developments.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

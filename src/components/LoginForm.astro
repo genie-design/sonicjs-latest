@@ -1,0 +1,40 @@
+<div
+  class="bg-base-200/80 container mx-auto flex justify-center rounded-2xl p-8"
+>
+  <form class="flex w-full max-w-sm flex-col">
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend">Email</legend>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="your@email.com"
+        class="input input-lg input-bordered w-full"
+        required
+      />
+    </fieldset>
+
+    <fieldset class="fieldset">
+      <legend class="fieldset-legend">Password</legend>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        placeholder="Enter your password"
+        class="input input-lg input-bordered w-full"
+        required
+      />
+    </fieldset>
+
+    <button type="submit" class="btn btn-primary mt-2 self-end">Login</button>
+
+    <div class="mt-2 text-center">
+      <a
+        href="/admin/register"
+        class="link link-hover text-secondary-content text-sm"
+      >
+        Need an account? Register here
+      </a>
+    </div>
+  </form>
+</div>

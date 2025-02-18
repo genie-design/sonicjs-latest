@@ -1,0 +1,7 @@
+---
+import { setUser } from '@/services/auth/middleware';
+import LoginForm from '@/components/LoginForm.astro';
+await setUser(Astro);
+---
+
+{!Astro.locals.user ? <LoginForm /> : <slot />}

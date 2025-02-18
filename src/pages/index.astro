@@ -1,11 +1,370 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import LandingPage from '../layouts/LandingPage.astro';
 
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<LandingPage>
+  <!-- Hero Section -->
+  <div class="hero bg-base-200 min-h-screen">
+    <div class="hero-content text-center">
+      <div class="max-w-md">
+        <h1 class="text-5xl font-bold">Hello there</h1>
+        <p class="py-6">
+          Welcome to our platform where innovation meets simplicity. We're here
+          to help you build amazing things.
+        </p>
+        <button class="btn btn-primary">Get Started</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features Section -->
+  <div class="bg-base-100 py-20">
+    <div class="mx-auto max-w-6xl px-4">
+      <h2 class="mb-12 text-center text-3xl font-bold">Why Choose Us</h2>
+
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+        <!-- Feature Card 1 -->
+        <div class="card bg-base-200">
+          <div class="card-body items-center text-center">
+            <div class="badge badge-primary badge-lg mb-2">Fast</div>
+            <h3 class="card-title">Lightning Quick</h3>
+            <p>Optimized for speed and performance</p>
+          </div>
+        </div>
+
+        <!-- Feature Card 2 -->
+        <div class="card bg-base-200">
+          <div class="card-body items-center text-center">
+            <div class="badge badge-primary badge-lg mb-2">Secure</div>
+            <h3 class="card-title">Enterprise Security</h3>
+            <p>Built with security best practices</p>
+          </div>
+        </div>
+
+        <!-- Feature Card 3 -->
+        <div class="card bg-base-200">
+          <div class="card-body items-center text-center">
+            <div class="badge badge-primary badge-lg mb-2">Simple</div>
+            <h3 class="card-title">Easy to Use</h3>
+            <p>Intuitive interface for everyone</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA Section -->
+  <div class="bg-primary text-primary-content">
+    <div class="mx-auto max-w-4xl px-4 py-16 text-center">
+      <h2 class="mb-4 text-3xl font-bold">Ready to get started?</h2>
+      <p class="mb-8">
+        Join thousands of satisfied customers who trust our platform
+      </p>
+      <div class="join gap-2">
+        <button class="btn btn-secondary join-item">Sign Up Now</button>
+        <button class="btn btn-outline btn-secondary join-item"
+          >Learn More</button
+        >
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Section -->
+  <div class="bg-base-200 py-16">
+    <div class="mx-auto max-w-6xl px-4">
+      <div class="stats w-full shadow">
+        <div class="stat place-items-center">
+          <div class="stat-title">Downloads</div>
+          <div class="stat-value">31K</div>
+          <div class="stat-desc">From January 1st to February 1st</div>
+        </div>
+
+        <div class="stat place-items-center">
+          <div class="stat-title">Active Users</div>
+          <div class="stat-value text-primary">4,200</div>
+          <div class="stat-desc text-primary">↗︎ 40 (2%)</div>
+        </div>
+
+        <div class="stat place-items-center">
+          <div class="stat-title">Customer Satisfaction</div>
+          <div class="stat-value">98%</div>
+          <div class="stat-desc">↗︎ 90 (14%)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Services Cards Section -->
+  <div class="bg-base-100 py-20">
+    <div class="mx-auto max-w-6xl px-4">
+      <h2 class="mb-12 text-center text-3xl font-bold">Our Services</h2>
+      <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <!-- Service Card 1 -->
+        <div class="card bg-primary text-primary-content">
+          <div class="card-body">
+            <h3 class="card-title">Premium Support</h3>
+            <p>24/7 dedicated support team at your service</p>
+            <div class="card-actions justify-end">
+              <button class="btn btn-secondary">Learn More</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service Card 2 -->
+        <div class="card bg-secondary text-secondary-content">
+          <div class="card-body">
+            <h3 class="card-title">Cloud Solutions</h3>
+            <p>Scalable cloud infrastructure for your needs</p>
+            <div class="card-actions justify-end">
+              <button class="btn btn-primary">Get Started</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service Card 3 -->
+        <div class="card bg-accent text-accent-content">
+          <div class="card-body">
+            <h3 class="card-title">Analytics</h3>
+            <p>Advanced analytics and reporting tools</p>
+            <div class="card-actions justify-end">
+              <button class="btn">Explore</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Timeline Section -->
+  <div class="bg-base-200 py-16">
+    <div class="mx-auto max-w-4xl px-4">
+      <h2 class="mb-12 text-center text-3xl font-bold">Our Journey</h2>
+      <ul
+        class="timeline timeline-vertical timeline-snap-icon max-md:timeline-compact"
+      >
+        <li>
+          <div class="timeline-middle">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              class="h-5 w-5"
+              ><path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                clip-rule="evenodd"></path></svg
+            >
+          </div>
+          <div class="timeline-start mb-10 md:text-end">
+            <time class="font-mono italic">2020</time>
+            <div class="text-lg font-black">Foundation</div>
+            Started with a vision to revolutionize the industry
+          </div>
+          <hr class="bg-primary" />
+        </li>
+        <li>
+          <hr class="bg-primary" />
+          <div class="timeline-middle">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              class="h-5 w-5"
+              ><path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                clip-rule="evenodd"></path></svg
+            >
+          </div>
+          <div class="timeline-end mb-10">
+            <time class="font-mono italic">2022</time>
+            <div class="text-lg font-black">Expansion</div>
+            Reached our first million users
+          </div>
+          <hr class="bg-primary" />
+        </li>
+        <li>
+          <hr class="bg-primary" />
+          <div class="timeline-middle">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              class="h-5 w-5"
+              ><path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                clip-rule="evenodd"></path></svg
+            >
+          </div>
+          <div class="timeline-start mb-10 md:text-end">
+            <time class="font-mono italic">2024</time>
+            <div class="text-lg font-black">Innovation</div>
+            Launched revolutionary new features
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Pricing Section with Cards -->
+  <div class="bg-base-100 py-20">
+    <div class="mx-auto max-w-6xl px-4">
+      <h2 class="mb-12 text-center text-3xl font-bold">Pricing Plans</h2>
+      <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+        <!-- Basic Plan -->
+        <div class="card bg-base-200">
+          <div class="card-body items-center text-center">
+            <h3 class="card-title text-2xl">Basic</h3>
+            <div class="my-4">
+              <span class="text-4xl font-bold">$29</span>
+              <span class="text-base-content/70">/month</span>
+            </div>
+            <div class="space-y-2">
+              <div class="flex items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="text-success h-4 w-4"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                <span>Basic Features</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="text-success h-4 w-4"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                <span>5 Projects</span>
+              </div>
+            </div>
+            <div class="card-actions mt-6">
+              <button class="btn btn-primary">Choose Basic</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pro Plan -->
+        <div class="card bg-primary text-primary-content">
+          <div class="card-body items-center text-center">
+            <div class="badge badge-secondary mb-2">POPULAR</div>
+            <h3 class="card-title text-2xl">Pro</h3>
+            <div class="my-4">
+              <span class="text-4xl font-bold">$99</span>
+              <span>/month</span>
+            </div>
+            <div class="space-y-2">
+              <div class="flex items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                <span>All Basic Features</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                <span>Unlimited Projects</span>
+              </div>
+            </div>
+            <div class="card-actions mt-6">
+              <button class="btn btn-secondary">Choose Pro</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Enterprise Plan -->
+        <div class="card bg-base-200">
+          <div class="card-body items-center text-center">
+            <h3 class="card-title text-2xl">Enterprise</h3>
+            <div class="my-4">
+              <span class="text-4xl font-bold">$299</span>
+              <span class="text-base-content/70">/month</span>
+            </div>
+            <div class="space-y-2">
+              <div class="flex items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="text-success h-4 w-4"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                <span>All Pro Features</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="text-success h-4 w-4"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"></path>
+                </svg>
+                <span>24/7 Support</span>
+              </div>
+            </div>
+            <div class="card-actions mt-6">
+              <button class="btn btn-accent">Contact Sales</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Newsletter Section -->
+  <div class="bg-accent text-accent-content py-16">
+    <div class="mx-auto max-w-4xl px-4 text-center">
+      <h2 class="mb-8 text-3xl font-bold">Stay Updated</h2>
+      <p class="mb-8">
+        Subscribe to our newsletter for the latest updates and exclusive offers
+      </p>
+      <div class="join">
+        <input
+          class="input join-item input-bordered w-full max-w-xs"
+          placeholder="Email address"
+        />
+        <button class="btn btn-primary join-item">Subscribe</button>
+      </div>
+    </div>
+  </div>
+</LandingPage>

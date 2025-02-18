@@ -1,3 +1,60 @@
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui"; 
+@plugin "daisyui/theme" {
+  name: "genie";
+  default: true;
+  prefersdark: true; /* changed to true for dark theme */
+  color-scheme: dark; /* changed to dark */
+
+  /* Base colors - deep mystical blues */
+  --color-base-100: oklch(15% 0.02 240);  /* Deep midnight blue */
+  --color-base-200: oklch(12% 0.03 235);  /* Darker midnight */
+  --color-base-300: oklch(10% 0.04 230);  /* Darkest midnight */
+  --color-base-content: oklch(90% 0.03 240);  /* Light blue-white text */
+
+  /* Primary - glowing magical blue */
+  --color-primary: oklch(55% 0.25 240);  /* Glowing sapphire */
+  --color-primary-content: oklch(98% 0.01 240);  /* Bright text on primary */
+
+  /* Secondary - mystical gold */
+  --color-secondary: oklch(75% 0.15 85);  /* Luminous gold */
+  --color-secondary-content: oklch(15% 0.05 85);  /* Dark text on gold */
+
+  /* Accent - ethereal turquoise */
+  --color-accent: oklch(60% 0.2 200);  /* Glowing turquoise */
+  --color-accent-content: oklch(98% 0.01 200);
+
+  /* Neutral - deep mysterious navy */
+  --color-neutral: oklch(20% 0.1 240);  /* Deep mysterious blue */
+  --color-neutral-content: oklch(90% 0.01 240);
+
+  /* Status colors with magical dark theme */
+  --color-info: oklch(65% 0.2 220);  /* Glowing mystical blue */
+  --color-info-content: oklch(98% 0.01 220);
+  
+  --color-success: oklch(70% 0.15 140);  /* Magical emerald */
+  --color-success-content: oklch(98% 0.01 140);
+  
+  --color-warning: oklch(80% 0.2 85);  /* Bright magical gold */
+  --color-warning-content: oklch(15% 0.05 85);
+  
+  --color-error: oklch(60% 0.25 30);  /* Deep ruby */
+  --color-error-content: oklch(98% 0.01 30);
+
+  /* border radius */
+  --radius-selector: 1.5rem;
+  --radius-field: 1.5rem;
+  --radius-box: 1.5rem;
+
+  /* base sizes */
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+
+  /* border size */
+  --border: 1px;
+
+  /* effects */
+  --depth: 1;
+  --noise: 0;
+}
 @plugin "@iconify/tailwind4";
