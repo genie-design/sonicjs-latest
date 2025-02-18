@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-namespace */
 import type { Config } from './config';
 
 export declare namespace Adapter {
@@ -35,12 +36,12 @@ export declare namespace Adapter {
 export type Adapter = {
   getUser(
     config: Config,
-    userId: Adapter.UId
+    userId: Adapter.UId,
   ): Promise<Adapter.UserSelectSchema | null>;
 
   getUserByEmail(
     config: Config,
-    email: string
+    email: string,
   ): Promise<Adapter.UserSelectSchema | null>;
 
   setUser(
@@ -50,13 +51,13 @@ export type Adapter = {
       Adapter.KeyInsertSchema,
       Config['colDef']['key']['userId']
     > | null,
-    tx?: Adapter.DB
+    tx?: Adapter.DB,
   ): Promise<Adapter.UserSelectSchema>;
 
   updateUser(
     config: Config,
     userId: Adapter.UId,
-    partial: Adapter.UserInsertSchema
+    partial: Adapter.UserInsertSchema,
   ): Promise<Adapter.UserSelectSchema>;
 
   deleteUser(config: Config, userId: Adapter.UId): Promise<void>;
@@ -64,46 +65,46 @@ export type Adapter = {
   getKey(
     config: Config,
     provider: Adapter.KProvider,
-    providerUserId: Adapter.KProviderUserId
+    providerUserId: Adapter.KProviderUserId,
   ): Promise<Adapter.KeySelectSchema | null>;
 
   getKeysByUserId(
     config: Config,
-    userId: Adapter.UId
+    userId: Adapter.UId,
   ): Promise<Adapter.KeySelectSchema[]>;
 
   setKey(
     config: Config,
-    key: Adapter.KeyInsertSchema
+    key: Adapter.KeyInsertSchema,
   ): Promise<Adapter.KeySelectSchema>;
 
   updateKey(
     config: Config,
     provider: Adapter.KProvider,
     providerUserId: Adapter.KProviderUserId,
-    partialKey: Adapter.KeyUpdateSchema
+    partialKey: Adapter.KeyUpdateSchema,
   ): Promise<Adapter.KeySelectSchema>;
 
   deleteKey(
     config: Config,
     provider: Adapter.KProvider,
-    providerUserId: Adapter.KProviderUserId
+    providerUserId: Adapter.KProviderUserId,
   ): Promise<void>;
 
   getSessionsByUserId(
     config: Config,
-    userId: Adapter.UId
+    userId: Adapter.UId,
   ): Promise<Adapter.SessionSelectSchema[]>;
 
   setSession(
     config: Config,
-    session: Adapter.SessionInsertSchema
+    session: Adapter.SessionInsertSchema,
   ): Promise<Adapter.SessionSelectSchema>;
 
   updateSession(
     config: Config,
     sessionId: Adapter.SId,
-    partialSession: Adapter.SessionUpdateSchema
+    partialSession: Adapter.SessionUpdateSchema,
   ): Promise<Adapter.SessionSelectSchema>;
 
   deleteSession(config: Config, sessionId: Adapter.SId): Promise<void>;
@@ -113,12 +114,12 @@ export type Adapter = {
   deleteSessionsByUserId(
     config: Config,
     userId: Adapter.UId,
-    sessionsToKeep: Adapter.SId[]
+    sessionsToKeep: Adapter.SId[],
   ): Promise<void>;
 
   getSessionAndUser(
     config: Config,
-    sessionId: Adapter.SId
+    sessionId: Adapter.SId,
   ): Promise<{
     session: Adapter.SessionSelectSchema | null;
     user: Adapter.UserSelectSchema | null;

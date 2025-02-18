@@ -1,14 +1,19 @@
 import { defineMiddleware } from 'astro:middleware';
-import { initializeConfig } from '@/services/auth/config';
-import { Auth } from '@/services/auth/auth';
-import { count } from 'drizzle-orm';
-import { table as userSchema } from '@/db/schema/users';
 import pino, { multistream } from 'pino';
 import { createWriteStream, Severity } from 'pino-sentry';
 
+import { Auth } from '@/services/auth/auth';
+import { initializeConfig } from '@/services/auth/config';
 export const onRequest = defineMiddleware(async (context, next) => {
   context.locals.logger = setupLogger();
   context.locals.logger.trace('Logger initialized');
+
+  const config = initializeConfig(
+    context.locals.runtime.env.DB,
+    context.locals.runtime.env,
+  );
+  context.locals.auth = new Auth(config);
+  context.locals.logger.trace('Auth initialized');
   // const config = initializeConfig(
   //   context.locals.runtime.env.DB,
   //   context.locals.runtime.env,

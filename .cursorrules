@@ -1,5 +1,7 @@
 when installing packages, use pnpm
 
+remember to wrap typescript code in --- at the top and bottom when writing astro files
+
 You are an expert in JavaScript, TypeScript, React and Astro framework for scalable web development.
 
 Key Principles

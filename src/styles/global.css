@@ -1,50 +1,50 @@
 @import "tailwindcss";
 @plugin "daisyui"; 
 @plugin "daisyui/theme" {
-  name: "genie";
+  name: "sonic";
   default: true;
-  prefersdark: true; /* changed to true for dark theme */
-  color-scheme: dark; /* changed to dark */
+  prefersdark: true;
+  color-scheme: dark;
 
-  /* Base colors - deep mystical blues */
-  --color-base-100: oklch(15% 0.02 240);  /* Deep midnight blue */
-  --color-base-200: oklch(12% 0.03 235);  /* Darker midnight */
-  --color-base-300: oklch(10% 0.04 230);  /* Darkest midnight */
-  --color-base-content: oklch(90% 0.03 240);  /* Light blue-white text */
+  /* Base colors - dark gray-blue from Sonic theme */
+  --color-base-100: oklch(21.01% 0.032 264.7);  /* RGB(17, 24, 39) */
+  --color-base-200: oklch(16% 0.032 264.7);   /* Adjusted darker */
+  --color-base-300: oklch(12% 0.032 264.7);   /* Adjusted darkest */
+  --color-base-content: oklch(98% 0 0);    /* White text */
 
-  /* Primary - glowing magical blue */
-  --color-primary: oklch(55% 0.25 240);  /* Glowing sapphire */
-  --color-primary-content: oklch(98% 0.01 240);  /* Bright text on primary */
+  /* Primary - Sonic gold */
+  --color-primary: oklch(85.2% 0.17 87);     /* RGB(255, 197, 3) */
+  --color-primary-content: oklch(10% 0.01 255); /* Dark text on primary */
 
-  /* Secondary - mystical gold */
-  --color-secondary: oklch(75% 0.15 85);  /* Luminous gold */
-  --color-secondary-content: oklch(15% 0.05 85);  /* Dark text on gold */
+  /* Secondary - complementary blue */
+  --color-secondary: oklch(50% 0.2 255);   /* Slightly darker blue */
+  --color-secondary-content: oklch(98% 0 0);
 
-  /* Accent - ethereal turquoise */
-  --color-accent: oklch(60% 0.2 200);  /* Glowing turquoise */
-  --color-accent-content: oklch(98% 0.01 200);
+  /* Accent - electric cyan */
+  --color-accent: oklch(70% 0.2 195);     /* Bright electric cyan */
+  --color-accent-content: oklch(10% 0.01 255);  /* Dark text on accent */
 
-  /* Neutral - deep mysterious navy */
-  --color-neutral: oklch(20% 0.1 240);  /* Deep mysterious blue */
-  --color-neutral-content: oklch(90% 0.01 240);
+  /* Neutral - deeper base */
+  --color-neutral: oklch(8% 0.01 255);    /* Slightly darker than base */
+  --color-neutral-content: oklch(98% 0 0);
 
-  /* Status colors with magical dark theme */
-  --color-info: oklch(65% 0.2 220);  /* Glowing mystical blue */
-  --color-info-content: oklch(98% 0.01 220);
+  /* Status colors */
+  --color-info: oklch(60% 0.2 255);       /* Blue */
+  --color-info-content: oklch(98% 0 0);
   
-  --color-success: oklch(70% 0.15 140);  /* Magical emerald */
-  --color-success-content: oklch(98% 0.01 140);
+  --color-success: oklch(70% 0.15 145);    /* Green */
+  --color-success-content: oklch(98% 0 0);
   
-  --color-warning: oklch(80% 0.2 85);  /* Bright magical gold */
-  --color-warning-content: oklch(15% 0.05 85);
+  --color-warning: oklch(85% 0.2 85);      /* Same as primary (gold) */
+  --color-warning-content: oklch(10% 0.01 255);
   
-  --color-error: oklch(60% 0.25 30);  /* Deep ruby */
-  --color-error-content: oklch(98% 0.01 30);
+  --color-error: oklch(65% 0.25 30);       /* Red */
+  --color-error-content: oklch(98% 0 0);
 
   /* border radius */
-  --radius-selector: 1.5rem;
-  --radius-field: 1.5rem;
-  --radius-box: 1.5rem;
+  --radius-selector: 0.5rem;
+  --radius-field: 0.5rem;
+  --radius-box: 0.5rem;
 
   /* base sizes */
   --size-selector: 0.25rem;
@@ -57,4 +57,6 @@
   --depth: 1;
   --noise: 0;
 }
+
+
 @plugin "@iconify/tailwind4";

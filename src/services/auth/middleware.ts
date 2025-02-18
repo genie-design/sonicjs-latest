@@ -1,8 +1,6 @@
 import type { APIContext } from 'astro';
-import { count } from 'console';
 import { Auth } from './auth';
 import { initializeConfig } from './config';
-import { table as userSchema } from '@/db/schema/users';
 export const setUser = async (context: APIContext) => {
   const config = initializeConfig(
     context.locals.runtime.env.DB,
@@ -11,15 +9,17 @@ export const setUser = async (context: APIContext) => {
   context.locals.auth = new Auth(config);
 
   // Get session token from cookie
-  const sessionId = context.cookies.get('session')?.value;
+  const sessionId = context.cookies.get('auth_session')?.value;
 
   // Check if we're already on the login or register page
   //   const isAuthPage = context.url.pathname.match(/^\/admin\/(login|register)/);
 
   try {
     if (sessionId) {
+      context.locals.logger.trace('Session ID:', sessionId);
       // Validate the session
       const { user } = await context.locals.auth.validateSession(sessionId);
+      context.locals.logger.trace('User:', user);
       if (user) {
         context.locals.user = user;
 

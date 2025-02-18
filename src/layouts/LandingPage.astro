@@ -18,7 +18,9 @@ import Layout from './Layout.astro';
     </nav>
 
     <!-- Main Layout Grid -->
-    <div class="grid min-h-screen gap-4 p-4 lg:grid-cols-[500px_1fr_500px]">
+    <div
+      class="grid min-h-screen gap-4 p-4 lg:grid-cols-[300px_1fr_300px] 2xl:grid-cols-[500px_1fr_500px]"
+    >
       <div>
         <!-- Left Sidebar -->
         <nav class="hidden space-y-4 lg:block">
@@ -40,8 +42,15 @@ import Layout from './Layout.astro';
       </div>
 
       <!-- Main Content Area -->
-      <main class="bg-secondary min-h-[80vh] rounded-3xl p-8 backdrop-blur-sm">
-        <slot />
+      <main
+        class="bg-secondary flex min-h-[80vh] flex-col gap-8 rounded-3xl p-8 backdrop-blur-sm"
+      >
+        <div class="flex justify-center">
+          <img src="/sonicjs-logo.svg" alt="SonicJS Logo" class="h-12 w-auto" />
+        </div>
+        <div class="flex-1">
+          <slot />
+        </div>
       </main>
 
       <!-- Right Sidebar -->

@@ -1,40 +1,105 @@
-<div
-  class="bg-base-200/80 container mx-auto flex justify-center rounded-2xl p-8"
->
-  <form class="flex w-full max-w-sm flex-col">
-    <fieldset class="fieldset">
-      <legend class="fieldset-legend">Email</legend>
-      <input
-        type="email"
-        id="email"
-        name="email"
-        placeholder="your@email.com"
-        class="input input-lg input-bordered w-full"
-        required
-      />
-    </fieldset>
+<div class="flex h-full items-center justify-center">
+  <div
+    class="bg-base-200/80 container mx-auto flex justify-center rounded-2xl p-8"
+  >
+    <div class="w-full max-w-sm">
+      <h1 class="mb-8 text-center text-3xl font-bold">Sign In</h1>
 
-    <fieldset class="fieldset">
-      <legend class="fieldset-legend">Password</legend>
-      <input
-        type="password"
-        id="password"
-        name="password"
-        placeholder="Enter your password"
-        class="input input-lg input-bordered w-full"
-        required
-      />
-    </fieldset>
+      <div id="error-general" class="alert alert-error mb-4 hidden">
+        <span class="icon-[solar--danger-circle-bold] text-xl"></span>
+        <span></span>
+      </div>
 
-    <button type="submit" class="btn btn-primary mt-2 self-end">Login</button>
+      <form id="login-form" class="space-y-6">
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend">Email</legend>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="your@email.com"
+            class="input input-lg input-bordered w-full"
+            required
+            autocomplete="email"
+          />
+        </fieldset>
 
-    <div class="mt-2 text-center">
-      <a
-        href="/admin/register"
-        class="link link-hover text-secondary-content text-sm"
-      >
-        Need an account? Register here
-      </a>
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend">Password</legend>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            class="input input-lg input-bordered w-full"
+            required
+            autocomplete="current-password"
+          />
+        </fieldset>
+
+        <div class="flex items-center justify-between">
+          <label class="label cursor-pointer gap-2">
+            <input type="checkbox" name="remember" class="checkbox" />
+            <span class="label-text">Remember me</span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-full">Login</button>
+
+        <div class="text-center">
+          <a
+            href="/admin/register"
+            class="link link-hover text-secondary-content text-sm"
+          >
+            Need an account? Register here
+          </a>
+        </div>
+      </form>
     </div>
-  </form>
+  </div>
 </div>
+
+<script>
+  interface ApiResponse {
+    error?: string;
+    success?: boolean;
+  }
+
+  const form = document.getElementById('login-form') as HTMLFormElement;
+  const errorGeneral = document.getElementById(
+    'error-general',
+  ) as HTMLDivElement;
+
+  const clearErrors = () => {
+    errorGeneral.classList.add('hidden');
+  };
+
+  const showError = (message: string) => {
+    errorGeneral.classList.remove('hidden');
+    errorGeneral.querySelector('span:last-child')!.textContent = message;
+  };
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearErrors();
+
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        body: new FormData(form),
+      });
+
+      const data = (await response.json()) as ApiResponse;
+
+      if (!response.ok) {
+        showError(data.error || 'An error occurred during sign in');
+        return;
+      }
+
+      // Redirect to admin dashboard on success
+      window.location.href = '/admin';
+    } catch (error) {
+      showError('An error occurred during sign in');
+    }
+  });
+</script>

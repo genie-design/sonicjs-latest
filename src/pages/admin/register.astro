@@ -1,7 +1,211 @@
 ---
-import Layout from "../../layouts/Layout.astro";
+import ContentPage from '../../layouts/ContentPage.astro';
 ---
 
-<Layout>
-  <h1>Register</h1>
-</Layout>
+<ContentPage title="Register - SonicJS">
+  <div class="flex h-full items-center justify-center">
+    <div
+      class="bg-base-200/80 container mx-auto flex justify-center rounded-2xl p-8"
+    >
+      <div class="w-full max-w-sm">
+        <h1 class="mb-8 text-center text-3xl font-bold">Create an Account</h1>
+
+        <div id="error-general" class="alert alert-error mb-4 hidden">
+          <span class="icon-[solar--danger-circle-bold] text-xl"></span>
+          <span></span>
+        </div>
+
+        <form id="register-form" class="space-y-6">
+          <fieldset class="fieldset">
+            <legend class="fieldset-legend">Email</legend>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="input input-lg input-bordered w-full"
+              required
+              autocomplete="email"
+            />
+            <label class="label hidden" id="error-email">
+              <span class="label-text-alt text-error"></span>
+            </label>
+          </fieldset>
+
+          <div class="lg:grid lg:grid-cols-2 lg:gap-4">
+            <fieldset class="fieldset">
+              <legend class="fieldset-legend">First Name</legend>
+              <input
+                type="text"
+                id="firstName"
+                name="firstName"
+                class="input input-lg input-bordered w-full"
+                autocomplete="given-name"
+              />
+            </fieldset>
+
+            <fieldset class="fieldset">
+              <legend class="fieldset-legend">Last Name</legend>
+              <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                class="input input-lg input-bordered w-full"
+                autocomplete="family-name"
+              />
+            </fieldset>
+          </div>
+
+          <fieldset class="fieldset">
+            <legend class="fieldset-legend">Password</legend>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="input input-lg input-bordered w-full"
+              required
+              autocomplete="new-password"
+              minlength="8"
+            />
+            <label class="label hidden" id="error-password">
+              <span class="label-text-alt text-error"></span>
+            </label>
+          </fieldset>
+
+          <fieldset class="fieldset">
+            <legend class="fieldset-legend">Confirm Password</legend>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              class="input input-lg input-bordered w-full"
+              required
+              autocomplete="new-password"
+              minlength="8"
+            />
+          </fieldset>
+
+          <div class="form-control">
+            <label class="label cursor-pointer">
+              <span class="label-text"
+                >I agree to the Terms of Service and Privacy Policy</span
+              >
+              <input type="checkbox" class="checkbox" required />
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-full">
+            Create Account
+          </button>
+        </form>
+
+        <div class="mt-6 text-center">
+          <p class="text-sm">
+            Already have an account?
+            <a href="/admin/login" class="link link-primary">Sign in</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    slot="left-sidebar"
+    class="bg-base-200/50 rounded-2xl p-6 backdrop-blur-sm"
+  >
+    <h2 class="mb-4 text-xl font-bold">Join SonicJS</h2>
+    <p class="text-base-content/80">
+      Create your account to start building amazing websites with SonicJS.
+    </p>
+    <ul class="mt-6 space-y-2">
+      <li class="flex items-center gap-2">
+        <span class="icon-[solar--check-circle-bold] text-success text-xl"
+        ></span>
+        <span>Fast and intuitive CMS</span>
+      </li>
+      <li class="flex items-center gap-2">
+        <span class="icon-[solar--check-circle-bold] text-success text-xl"
+        ></span>
+        <span>Modern tech stack</span>
+      </li>
+      <li class="flex items-center gap-2">
+        <span class="icon-[solar--check-circle-bold] text-success text-xl"
+        ></span>
+        <span>Developer friendly</span>
+      </li>
+    </ul>
+  </div>
+</ContentPage>
+
+<script>
+  interface ApiResponse {
+    error?: string;
+    field?: string;
+    success?: boolean;
+  }
+
+  const form = document.getElementById('register-form') as HTMLFormElement;
+  const errorGeneral = document.getElementById(
+    'error-general',
+  ) as HTMLDivElement;
+  const errorEmail = document.getElementById('error-email') as HTMLLabelElement;
+  const errorPassword = document.getElementById(
+    'error-password',
+  ) as HTMLLabelElement;
+  const emailInput = document.getElementById('email') as HTMLInputElement;
+  const passwordInput = document.getElementById('password') as HTMLInputElement;
+
+  const clearErrors = () => {
+    errorGeneral.classList.add('hidden');
+    errorEmail.classList.add('hidden');
+    errorPassword.classList.add('hidden');
+    emailInput.classList.remove('input-error');
+    passwordInput.classList.remove('input-error');
+  };
+
+  const showError = (message: string, field?: string) => {
+    if (!field) {
+      errorGeneral.classList.remove('hidden');
+      errorGeneral.querySelector('span:last-child')!.textContent = message;
+      return;
+    }
+
+    const errorElement = document.getElementById(
+      `error-${field}`,
+    ) as HTMLLabelElement;
+    const inputElement = document.getElementById(field) as HTMLInputElement;
+
+    if (errorElement && inputElement) {
+      errorElement.classList.remove('hidden');
+      errorElement.querySelector('span')!.textContent = message;
+      inputElement.classList.add('input-error');
+    }
+  };
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearErrors();
+
+    try {
+      const response = await fetch('/api/register', {
+        method: 'POST',
+        body: new FormData(form),
+      });
+
+      const data = (await response.json()) as ApiResponse;
+
+      if (!response.ok) {
+        if (data.field) {
+          showError(data.error!, data.field);
+        } else {
+          showError(data.error || 'An error occurred during registration');
+        }
+        return;
+      }
+
+      // Redirect to login page on success
+      window.location.href = '/admin/login';
+    } catch (error) {
+      showError('An error occurred during registration');
+    }
+  });
+</script>
