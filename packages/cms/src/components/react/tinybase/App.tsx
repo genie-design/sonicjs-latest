@@ -66,10 +66,7 @@ export const App = () => {
     <StrictMode>
       <Provider store={store}>
         <header>
-          <h1>
-            <img src="/favicon.svg" />
-            TinyBase & Synchronization
-          </h1>
+          <h1>TinyBase & Synchronization</h1>
           To demonstrate synchronization,{' '}
           <a href={serverPathId}>open this exact URL</a> in multiple incognito
           browser windows, or even other browsers altogether.
