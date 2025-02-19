@@ -23,14 +23,13 @@ import Layout from './Layout.astro';
     >
       <div>
         <!-- Left Sidebar -->
+
         <nav class="hidden space-y-4 lg:block">
-          <ul
-            class="border-accent flex justify-around gap-4 rounded-3xl border p-6 backdrop-blur-sm"
-          >
-            <li><a href="/" class="link link-hover">Home</a></li>
-            <li><a href="/about" class="link link-hover">About</a></li>
-            <li><a href="/products" class="link link-hover">Products</a></li>
-            <li><a href="/contact" class="link link-hover">Contact</a></li>
+          <ul class="menu bg-base-200/50 rounded-box w-full">
+            <li class="menu-title">Auth</li>
+            <li><a href="/admin/users">Users</a></li>
+            <li><a>Item 2</a></li>
+            <li><a>Item 3</a></li>
           </ul>
         </nav>
         <div class="bg-base-200/50 rounded-2xl p-6 backdrop-blur-sm">

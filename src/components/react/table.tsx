@@ -8,26 +8,26 @@ import {
   type SortingState,
   type ColumnDef,
 } from '@tanstack/react-table';
-import type { ApiConfig } from '../../db/routes';
 import type { SQLiteColumnBuilderBase } from 'drizzle-orm/sqlite-core';
+import type { tableSchemas } from '../../db/routes';
 
 interface DataTableProps<TData> {
-  apiConfig: ApiConfig;
+  schema: (typeof tableSchemas)[keyof typeof tableSchemas]['definition'];
   data: TData[];
   onRowClick?: (row: TData) => void;
 }
 
 export function DataTable<
   TData extends Record<string, SQLiteColumnBuilderBase['_']['data']>,
->({ apiConfig, data, onRowClick }: DataTableProps<TData>) {
+>({ schema, data, onRowClick }: DataTableProps<TData>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const columns = useMemo(() => {
     const cols: ColumnDef<TData>[] = [];
 
     // Generate columns based on the table definition
-    if (apiConfig.definition) {
-      Object.entries(apiConfig.definition).forEach(([key]) => {
+    if (schema) {
+      Object.entries(schema).forEach(([key]) => {
         cols.push({
           id: key,
           accessorKey: key,
@@ -44,7 +44,7 @@ export function DataTable<
     }
 
     return cols;
-  }, [apiConfig.definition]);
+  }, [schema]);
 
   const table = useReactTable({
     data,

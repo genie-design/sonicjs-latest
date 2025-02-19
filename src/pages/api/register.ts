@@ -60,6 +60,8 @@ export const POST: APIRoute = async ({ request, locals }) => {
       .select({ count: count() })
       .from(userSchema);
 
+    locals.logger.info('Users count:' + usersCount[0].count);
+
     // Create user
     await locals.auth.createUser({
       key: {

@@ -1,0 +1,15 @@
+
+{
+  "name": "sonicjs-latest",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "sonicjs-latest",
+      "database_id": "",
+    },
+  ],
+  "vars": {
+    "SENTRY_AUTH_TOKEN": "",
+    "PUBLIC_SENTRY_DSN": "",
+  },
+}

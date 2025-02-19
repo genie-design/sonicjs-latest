@@ -1,0 +1,49 @@
+---
+import ContentPage from '@/layouts/ContentPage.astro';
+import AdminPage from '@/layouts/AdminPage.astro';
+import { table as userSchema } from '@/db/schema/users';
+import type { UserSelectSchema } from '@/db/schema/users';
+import { setUser } from '@/services/auth/middleware';
+import { DataTable } from '@/components/react/table';
+import { tableSchemas } from '@/db/routes';
+export const prerender = false;
+await setUser(Astro);
+let users: UserSelectSchema[] = [];
+let error: string | null = null;
+
+try {
+  if (Astro.locals.user?.role === 'admin') {
+    users = await Astro.locals.auth.config.db.select().from(userSchema);
+  }
+} catch (e) {
+  error = e instanceof Error ? e.message : 'Failed to fetch users';
+  console.error('Error fetching users:', e);
+}
+---
+
+<ContentPage title="Users">
+  <AdminPage>
+    {
+      error ? (
+        <div class="alert alert-error">
+          <span class="icon-[solar--danger-circle-bold] text-xl" />
+          <span>{error}</span>
+        </div>
+      ) : (
+        <div class="bg-base-100 container mx-auto w-full rounded-lg p-4">
+          {users.length > 0 ? (
+            <DataTable
+              client:load
+              schema={tableSchemas['users'].definition}
+              data={users}
+            />
+          ) : (
+            <div class="alert">
+              <span>No users found.</span>
+            </div>
+          )}
+        </div>
+      )
+    }
+  </AdminPage>
+</ContentPage>
