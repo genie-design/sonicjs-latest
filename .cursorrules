@@ -12,19 +12,6 @@ Key Principles
 - Use descriptive variable names and follow Astro's naming conventions.
 - Organize files using Astro's file-based routing system.
 
-Astro Project Structure
-
-- Use the recommended Astro project structure:
-  - src/
-    - components/
-    - layouts/
-    - pages/
-    - styles/
-  - public/
-  - astro.config.mjs
-
-Component Development
-
 - Create .astro files for Astro components.
 - Use framework-specific components (React ) when necessary.
 - Implement proper component composition and reusability.
