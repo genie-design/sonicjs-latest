@@ -17,7 +17,7 @@ import { Inspector } from 'tinybase/ui-react-inspector';
 import { Buttons } from './Buttons';
 
 const SERVER_SCHEME = 'wss://';
-const SERVER = 'http://localhost:8787';
+const SERVER = 'localhost:8787';
 
 export const App = () => {
   const serverPathId = location.pathname;

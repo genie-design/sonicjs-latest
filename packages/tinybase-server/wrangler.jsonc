@@ -1,0 +1,16 @@
+{
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "TinyBaseDurableObject",
+        "class_name": "TinyBaseDurableObject",
+      },
+    ],
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_classes": ["TinyBaseDurableObject"],
+    },
+  ],
+}
