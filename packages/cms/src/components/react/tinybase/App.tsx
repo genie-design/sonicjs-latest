@@ -1,4 +1,4 @@
-import React, { StrictMode } from 'react';
+import { StrictMode } from 'react';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { createMergeableStore, type MergeableStore } from 'tinybase';
 import { createLocalPersister } from 'tinybase/persisters/persister-browser';
@@ -17,8 +17,8 @@ import { Inspector } from 'tinybase/ui-react-inspector';
 import { Buttons } from './Buttons';
 
 const SERVER_SCHEME = 'wss://';
-const SERVER = 'localhost:8787';
-
+const SERVER = 'sonicjs-tinybase-server.geniecode.workers.dev';
+// const SERVER = 'vite.tinybase.cloud';
 export const App = () => {
   const serverPathId = location.pathname;
 

@@ -1,4 +1,9 @@
 {
+  "name": "sonicjs-tinybase-server",
+  "compatibility_date": "2025-02-14",
+  "observability": {
+      "enabled": true,
+  },
   "durable_objects": {
     "bindings": [
       {
