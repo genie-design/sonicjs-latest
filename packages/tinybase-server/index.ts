@@ -97,22 +97,40 @@ export default {
         WsServerDurableObject<unknown>
       >;
       JWT_SECRET: string;
+      DB: D1Database;
     }
   ) => {
     console.log("URL:", request.url);
     const token = new URL(request.url).searchParams.get("token");
     if (token) {
-      const decoded = await verifyToken(token, env.JWT_SECRET);
+      const decoded = await verifyToken(token, env.JWT_SECRET, env.DB);
       console.log(decoded);
     }
     return tinybaseFetch(request, env);
   },
 };
 
-async function verifyToken(token: string, secret: string) {
-  const decoded = verify<JWTPayload>(token, secret);
-  if (!decoded) throw new Error("Invalid token");
-  return decoded;
+async function verifyToken(token: string, secret: string, DB: D1Database) {
+  try {
+    const decoded = await verify<JWTPayload>(token, secret);
+    console.log("decoded", decoded);
+    if (!decoded?.payload) throw new Error("Invalid token");
+    const sessions = await DB.prepare("SELECT * FROM user_sessions").all();
+    console.log("sessions", sessions);
+    const key = await DB.prepare(
+      "SELECT * FROM user_keys WHERE provider = ? AND provider_user_id = ?"
+    )
+      .bind("SINGLE_WS", decoded.payload.userid)
+      .first();
+    console.log("key", key);
+    if (!key) throw new Error("Invalid token");
+    console.log("key.user_id", key.user_id);
+    if (key.user_id !== decoded.payload.userid)
+      throw new Error("Invalid token");
+    return decoded;
+  } catch (error) {
+    console.error("Error verifying token", error);
+  }
 }
 interface JWTPayload {
   userid: string;

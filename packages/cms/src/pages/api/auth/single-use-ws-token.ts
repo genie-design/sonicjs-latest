@@ -21,18 +21,17 @@ export const GET: APIRoute<Locals> = async (context) => {
         'SINGLE_WS',
       );
 
-      const verifyToken = await locals.auth.verifyToken(token);
+      // const verifyToken = await locals.auth.verifyToken(token);
 
-      console.log('bam', verifyToken);
+      // console.log('bam', verifyToken);
 
-      if (verifyToken.payload) {
-        const userByToken = await locals.auth.getKey('SINGLE_WS', token);
-        console.log(
-          'matchesKey',
-          userByToken?.user_id === verifyToken.payload.userid,
-        );
-        await locals.auth.deleteKey('SINGLE_WS', token);
-      }
+      // if (verifyToken.payload) {
+      //   const userByToken = await locals.auth.getKey('SINGLE_WS', token);
+      //   console.log(
+      //     'matchesKey',
+      //     userByToken?.user_id === verifyToken.payload.userid,
+      //   );
+      // }
 
       return new Response(
         JSON.stringify({
