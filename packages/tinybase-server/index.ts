@@ -14,13 +14,20 @@ import {
 //
 // If false, the Durable Object only provides synchronization between clients
 // (which are assumed to persist their own data).
-const PERSIST_TO_DURABLE_OBJECT = true;
+const PERSIST_TO_DURABLE_OBJECT = false;
 
 export class TinyBaseDurableObject extends WsServerDurableObject {
   store: MergeableStore | undefined;
   async fetch(request: Request) {
     // const allEntries = await this.ctx.storage.list();
     // console.log(allEntries);
+    console.log("Durable Object Fetch", {
+      // path: this.getPathId(),
+      clients: this.getClientIds(),
+    });
+    if (this.getClientIds().length > 0) {
+      console.log("path", this.getPathId());
+    }
     if (this.store) {
       // console.log("SCHEMA");
       // console.log(this.store.getTablesSchemaJson());
@@ -51,26 +58,22 @@ export class TinyBaseDurableObject extends WsServerDurableObject {
       //   console.log(`${valueId}: ${value}`);
       // });
     }
-    if (this.store) {
-      this.store.forEachTable;
-    }
     return super.fetch?.(request) || new Response("Not found", { status: 404 });
   }
 
-  getPathId(): Id {
-    return super.getPathId();
-  }
   onMessage(fromClientId: Id, toClientId: Id, remainder: string): void {
     // console.log("MESSAGE:", { fromClientId, toClientId, remainder });
   }
 
   onPathId(pathId: Id, addedOrRemoved: IdAddedOrRemoved) {
-    console.info((addedOrRemoved ? "Added" : "Removed") + ` path ${pathId}`);
+    console.info(
+      (addedOrRemoved > 0 ? "Added" : "Removed") + ` path ${pathId}`
+    );
   }
 
   onClientId(pathId: Id, clientId: Id, addedOrRemoved: IdAddedOrRemoved) {
     console.info(
-      (addedOrRemoved ? "Added" : "Removed") +
+      (addedOrRemoved > 0 ? "Added" : "Removed") +
         ` client ${clientId} on path ${pathId}`
     );
   }
@@ -94,6 +97,7 @@ export default {
       >;
     }
   ) => {
+    console.log("FETCH", request.url, request.headers.get("sec-websocket-key"));
     return tinybaseFetch(request, env);
   },
 };
