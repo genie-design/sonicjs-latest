@@ -17,11 +17,17 @@ export const Buttons = () => {
     species: store.getRowIds('species')[getRandom(5)],
   }));
 
+  const changeBoolean = useSetValueCallback(
+    'boolean',
+    () => (value: ValueOrUndefined) => !value,
+  );
+
   return (
     <div id="buttons">
       <button onClick={handleCount}>Increment number</button>
       <button onClick={handleRandom}>Random number</button>
       <button onClick={handleAddPet}>Add a pet</button>
+      <button onClick={changeBoolean}>Change boolean</button>
     </div>
   );
 };
