@@ -1,3 +1,4 @@
+import { verify } from "@tsndr/cloudflare-worker-jwt";
 import {
   createMergeableStore,
   Id,
@@ -26,7 +27,7 @@ export class TinyBaseDurableObject extends WsServerDurableObject {
       // console.log(this.store.getTablesSchemaJson());
       console.log("CONTENT");
       console.log("--------------------------------");
-      console.log(JSON.stringify(this.store.getContent(), null, 2));
+      console.log(JSON.stringify(this.store.getContent()));
       console.log("--------------------------------");
       // console.log("TABLES");
       // this.store.forEachTable((tableId, forEachRow) => {
@@ -92,8 +93,26 @@ export default {
       TinyBaseDurableObject: DurableObjectNamespace<
         WsServerDurableObject<unknown>
       >;
+      JWT_SECRET: string;
     }
   ) => {
+    console.log(request.headers);
+    const token = request.headers.get("Authorization")?.split(" ")[1];
+    if (token) {
+      const decoded = await verifyToken(token, env.JWT_SECRET);
+      console.log(decoded);
+    }
     return tinybaseFetch(request, env);
   },
 };
+
+async function verifyToken(token: string, secret: string) {
+  const decoded = verify<JWTPayload>(token, secret);
+  if (!decoded) throw new Error("Invalid token");
+  return decoded;
+}
+interface JWTPayload {
+  userid: string;
+  email: string | null;
+  exp: number;
+}

@@ -20,7 +20,7 @@ const SERVER_SCHEME = 'ws://';
 const SERVER = 'localhost:8787';
 
 export const App = () => {
-  const serverPathId = location.pathname;
+  const serverPathId = '/tinybase/path';
 
   const store = useCreateMergeableStore(createMergeableStore);
 
@@ -46,21 +46,25 @@ export const App = () => {
     },
   );
 
-  useCreateSynchronizer(store, async (store: MergeableStore) => {
-    const synchronizer = await createWsSynchronizer(
-      store,
-      new ReconnectingWebSocket(SERVER_SCHEME + SERVER + serverPathId),
-      1,
-    );
-    await synchronizer.startSync();
+  const websocket = new ReconnectingWebSocket(
+    SERVER_SCHEME + SERVER + serverPathId,
+  );
+  // useCreateSynchronizer(store, async (store: MergeableStore) => {
+  //   // ['Authorization', 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyaWQiOiIzMjlhOTlkYy00YjllLTQwOTQtYmJkMC0wZTE4MjcyNzE1ZmEiLCJlbWFpbCI6ImNAYy5jb20iLCJleHAiOjE3NDE5OTczNjI5MTEsImlhdCI6MTc0MDE3MDc5Mn0.eGI0m1cv71vuKL18EceZsDwhyV1CIlIIy2fJ49mYHBc']
+  //   const synchronizer = await createWsSynchronizer(
+  //     store,
+  //     new ReconnectingWebSocket(SERVER_SCHEME + SERVER + serverPathId),
+  //     1,
+  //   );
+  //   await synchronizer.startSync();
 
-    // If the websocket reconnects in the future, do another explicit sync.
-    synchronizer.getWebSocket().addEventListener('open', () => {
-      synchronizer.load().then(() => synchronizer.save());
-    });
+  //   // If the websocket reconnects in the future, do another explicit sync.
+  //   synchronizer.getWebSocket().addEventListener('open', () => {
+  //     synchronizer.load().then(() => synchronizer.save());
+  //   });
 
-    return synchronizer;
-  });
+  //   return synchronizer;
+  // });
 
   return (
     <StrictMode>

@@ -1,6 +1,7 @@
 import { adapter } from './adapter';
 import type { Adapter } from './interface';
 import type { Config } from './config';
+import { sign, verify } from '@tsndr/cloudflare-worker-jwt';
 
 import { hashPassword, validateHash } from './utils/crypto';
 import { isValidDatabaseSession } from './utils/session';
@@ -12,24 +13,23 @@ export class Auth {
 
   public passwordHash = {
     generate: hashPassword,
-    validate: validateHash
+    validate: validateHash,
   };
 
   private sessionExpiresIn = {
     activePeriod: 1000 * 60 * 60 * 24, // 1 day
-    idlePeriod: 1000 * 60 * 60 * 24 * 14 // 14 days
+    idlePeriod: 1000 * 60 * 60 * 24 * 14, // 14 days
   };
 
   private async generatePassword(password?: string | null) {
     const salt = generateRandomString(16);
-    const hash =
-      password ?
-        await this.passwordHash.generate({
+    const hash = password
+      ? await this.passwordHash.generate({
           password: password,
           salt,
           hash: this.config.password.hash,
           iterations: this.config.password.iterations,
-          kdf: this.config.password.kdf
+          kdf: this.config.password.kdf,
         })
       : null;
     if (hash) {
@@ -48,7 +48,7 @@ export class Auth {
     if (
       !instance.session ||
       !isValidDatabaseSession(
-        instance.session[this.config.colDef.session.idleExpires]
+        instance.session[this.config.colDef.session.idleExpires],
       )
     ) {
       throw new Error('Session expired');
@@ -63,11 +63,11 @@ export class Auth {
   }) {
     const activePeriodExpiresAt = new Date(
       new Date().getTime() +
-        (sessionExpiresIn?.activePeriod ?? this.sessionExpiresIn.activePeriod)
+        (sessionExpiresIn?.activePeriod ?? this.sessionExpiresIn.activePeriod),
     ).getTime();
     const idlePeriodExpiresAt = new Date(
       activePeriodExpiresAt +
-        (sessionExpiresIn?.idlePeriod ?? this.sessionExpiresIn.idlePeriod)
+        (sessionExpiresIn?.idlePeriod ?? this.sessionExpiresIn.idlePeriod),
     ).getTime();
     return { activePeriodExpiresAt, idlePeriodExpiresAt };
   }
@@ -83,7 +83,7 @@ export class Auth {
   public async createUser({
     key,
     attributes,
-    transaction
+    transaction,
   }: {
     key:
       | ({ password: string | null } & Omit<
@@ -105,15 +105,15 @@ export class Auth {
       attributes,
       {
         ...key,
-        hashed_password: await this.generatePassword(key.password)
+        hashed_password: await this.generatePassword(key.password),
       },
-      trx
+      trx,
     );
   }
 
   public async updateUserAttributes(
     userId: Adapter.UId,
-    attributes: Adapter.UserInsertSchema
+    attributes: Adapter.UserInsertSchema,
   ) {
     return adapter.updateUser(this.config, userId, attributes);
   }
@@ -125,7 +125,7 @@ export class Auth {
   public async useKey({
     provider,
     providerUserId,
-    password
+    password,
   }: {
     provider: Adapter.KProvider;
     providerUserId: Adapter.KProviderUserId;
@@ -134,7 +134,7 @@ export class Auth {
     const databaseKey = await adapter.getKey(
       this.config,
       provider,
-      providerUserId
+      providerUserId,
     );
     if (!databaseKey) throw new Error('Key not found');
     const hashedPassword = databaseKey[this.config.colDef.key.hashedPassword];
@@ -142,7 +142,7 @@ export class Auth {
       if (password === null) throw new Error('Password required');
       const isValid = await this.passwordHash.validate(
         password,
-        hashedPassword
+        hashedPassword,
       );
       if (!isValid) throw new Error('Invalid password');
     }
@@ -152,7 +152,7 @@ export class Auth {
   public async getSession(sessionId: Adapter.SId) {
     return {
       ...(await this.getDatabaseSessionAndUser(sessionId)),
-      fresh: false
+      fresh: false,
     };
   }
 
@@ -160,11 +160,11 @@ export class Auth {
     const sessions = await adapter.getSessionsByUserId(this.config, userId);
     return sessions
       .filter((session) =>
-        isValidDatabaseSession(session[this.config.colDef.session.idleExpires])
+        isValidDatabaseSession(session[this.config.colDef.session.idleExpires]),
       )
       .map((session) => ({
         ...session,
-        fresh: false
+        fresh: false,
       }));
   }
 
@@ -177,35 +177,34 @@ export class Auth {
       return {
         session,
         user,
-        fresh: false
+        fresh: false,
       };
     }
     const { activePeriodExpiresAt, idlePeriodExpiresAt } =
       this.getNewSessionExpiration();
 
-    const databaseSession =
-      session ?
-        await adapter.updateSession(
+    const databaseSession = session
+      ? await adapter.updateSession(
           this.config,
           session[this.config.colDef.session.id],
           {
             [this.config.colDef.session.activeExpires]: activePeriodExpiresAt,
-            [this.config.colDef.session.idleExpires]: idlePeriodExpiresAt
-          }
+            [this.config.colDef.session.idleExpires]: idlePeriodExpiresAt,
+          },
         )
       : null;
 
     return {
       session: databaseSession,
       user,
-      fresh: true
+      fresh: true,
     };
   }
 
   public async createSession({
     userId,
     attributes,
-    sessionId
+    sessionId,
   }: {
     userId: Adapter.UId;
     attributes: Omit<
@@ -228,19 +227,19 @@ export class Auth {
       [this.config.colDef.session.id]: token,
       [this.config.colDef.session.userId]: userId,
       [this.config.colDef.session.activeExpires]: activePeriodExpiresAt,
-      [this.config.colDef.session.idleExpires]: idlePeriodExpiresAt
+      [this.config.colDef.session.idleExpires]: idlePeriodExpiresAt,
     });
 
     return {
       session: databaseSession,
       user: databaseUser,
-      fresh: false
+      fresh: false,
     };
   }
 
   public async updateSessionAttributes(
     sessionId: Adapter.SId,
-    attributes: Adapter.SessionUpdateSchema
+    attributes: Adapter.SessionUpdateSchema,
   ) {
     return adapter.updateSession(this.config, sessionId, attributes);
   }
@@ -251,7 +250,7 @@ export class Auth {
 
   public async invalidateAllUserSessions(
     userId: Adapter.UId,
-    sessionsToKeep: Adapter.SId[]
+    sessionsToKeep: Adapter.SId[],
   ) {
     return adapter.deleteSessionsByUserId(this.config, userId, sessionsToKeep);
   }
@@ -260,11 +259,13 @@ export class Auth {
     const sessions = await adapter.getSessionsByUserId(this.config, userId);
     const deadSessions = sessions.filter(
       (session) =>
-        !isValidDatabaseSession(session[this.config.colDef.session.idleExpires])
+        !isValidDatabaseSession(
+          session[this.config.colDef.session.idleExpires],
+        ),
     );
     await adapter.deleteSessions(
       this.config,
-      deadSessions.map((session) => session[this.config.colDef.session.id])
+      deadSessions.map((session) => session[this.config.colDef.session.id]),
     );
   }
 
@@ -272,7 +273,7 @@ export class Auth {
     userId,
     provider,
     providerUserId,
-    password
+    password,
   }: {
     userId: Adapter.UId;
     provider: Adapter.KProvider;
@@ -283,20 +284,20 @@ export class Auth {
       [this.config.colDef.key.userId]: userId,
       [this.config.colDef.key.provider]: provider,
       [this.config.colDef.key.providerUserId]: providerUserId,
-      hashed_password: password ? await this.generatePassword(password) : null
+      hashed_password: password ? await this.generatePassword(password) : null,
     });
   }
 
   public async deleteKey(
     provider: Adapter.KProvider,
-    providerUserId: Adapter.KProviderUserId
+    providerUserId: Adapter.KProviderUserId,
   ) {
     return adapter.deleteKey(this.config, provider, providerUserId);
   }
 
   public async getKey(
     provider: Adapter.KProvider,
-    providerUserId: Adapter.KProviderUserId
+    providerUserId: Adapter.KProviderUserId,
   ) {
     return adapter.getKey(this.config, provider, providerUserId);
   }
@@ -308,11 +309,57 @@ export class Auth {
   public async updateKeyPassword(
     provider: Adapter.KProvider,
     providerUserId: Adapter.KProviderUserId,
-    password: string | null
+    password: string | null,
   ) {
     return adapter.updateKey(this.config, provider, providerUserId, {
-      [this.config.colDef.key.hashedPassword]:
-        password ? await this.generatePassword(password) : null
+      [this.config.colDef.key.hashedPassword]: password
+        ? await this.generatePassword(password)
+        : null,
     });
   }
+
+  public async createToken(userId: Adapter.UId) {
+    const user = await this.getUser(userId);
+    if (!user) throw new Error('User not found');
+
+    const { activePeriodExpiresAt } = this.getNewSessionExpiration();
+
+    const payload: JWTPayload = {
+      userid: user.id,
+      email: user[this.config.colDef.user.email],
+      exp: Math.floor(Date.now() / 1000) + activePeriodExpiresAt,
+    };
+
+    const token = await sign(payload, this.config.jwt.secret);
+
+    await this.createSession({
+      userId: user.id,
+      sessionId: token,
+      attributes: {},
+    });
+
+    return token;
+  }
+
+  public async verifyToken(token: string) {
+    const decoded = await verify<JWTPayload>(token, this.config.jwt.secret);
+    if (!decoded) throw new Error('Invalid token');
+    return decoded;
+  }
+
+  public async getUserFromToken(token: string, validateSession = false) {
+    const decoded = await this.verifyToken(token);
+    if (!decoded.payload?.userid) throw new Error('Invalid token');
+    if (validateSession) {
+      const { user } = await this.validateSession(token);
+      return user;
+    }
+    return this.getUser(decoded.payload.userid);
+  }
+}
+
+interface JWTPayload {
+  userid: string;
+  email: string | null;
+  exp: number;
 }

@@ -14,19 +14,20 @@ export const definition = {
     .notNull()
     .references(() => users.table.id),
   provider_user_id: text('provider_user_id', { length: 255 }).notNull(),
-  provider: text('provider', { enum: ['EMAIL'] })
+  provider: text('provider', { enum: ['EMAIL', 'TOKEN'] })
     .notNull()
     .default('EMAIL'),
-  hashed_password: text('hashed_password')
+  hashed_password: text('hashed_password'),
+  token: text('token'),
 };
 
 export const table = sqliteTable(tableName, {
   ...definition,
-  ...auditSchema
+  ...auditSchema,
 });
 export const relation = relations(table, ({ one }) => ({
   user: one(users.table, {
     fields: [table.user_id],
-    references: [users.table.id]
-  })
+    references: [users.table.id],
+  }),
 }));

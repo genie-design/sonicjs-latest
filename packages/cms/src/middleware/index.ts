@@ -8,6 +8,14 @@ export const onRequest = defineMiddleware(async (context, next) => {
   context.locals.logger = setupLogger();
   context.locals.logger.trace('Logger initialized');
 
+  const origin = context.request.headers.get('origin');
+  if (context.request.method !== 'GET') {
+    if (origin === null || !origin.includes('localhost')) {
+      context.locals.logger.trace('Origin not allowed');
+      return new Response(`Origin not allowed: ${origin}`, { status: 403 });
+    }
+  }
+
   const config = initializeConfig(
     context.locals.runtime.env.DB,
     context.locals.runtime.env,
