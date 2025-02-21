@@ -321,26 +321,43 @@ export class Auth {
   public async createToken(userId: Adapter.UId) {
     const user = await this.getUser(userId);
     if (!user) throw new Error('User not found');
-
-    const { activePeriodExpiresAt } = this.getNewSessionExpiration();
+    return await this.createTokenFromUser(user);
+  }
+  public async createTokenFromUser(
+    user: Adapter.UserSelectSchema,
+    expiresIn?: number,
+    createSession = true,
+    keyProvider?: Adapter.KProvider,
+  ) {
+    if (!user) throw new Error('User not found');
 
     const payload: JWTPayload = {
       userid: user.id,
       email: user[this.config.colDef.user.email],
-      exp: Math.floor(Date.now() / 1000) + activePeriodExpiresAt,
+      exp:
+        Math.floor(Date.now() / 1000) +
+        (expiresIn ?? this.getNewSessionExpiration().activePeriodExpiresAt),
     };
 
     const token = await sign(payload, this.config.jwt.secret);
 
-    await this.createSession({
-      userId: user.id,
-      sessionId: token,
-      attributes: {},
-    });
-
+    if (createSession) {
+      await this.createSession({
+        userId: user.id,
+        sessionId: token,
+        attributes: {},
+      });
+    }
+    if (keyProvider) {
+      await this.createKey({
+        userId: user.id,
+        provider: keyProvider,
+        providerUserId: token,
+        password: null,
+      });
+    }
     return token;
   }
-
   public async verifyToken(token: string) {
     const decoded = await verify<JWTPayload>(token, this.config.jwt.secret);
     if (!decoded) throw new Error('Invalid token');

@@ -99,8 +99,8 @@ export default {
       JWT_SECRET: string;
     }
   ) => {
-    console.log(request.headers);
-    const token = request.headers.get("Authorization")?.split(" ")[1];
+    console.log("URL:", request.url);
+    const token = new URL(request.url).searchParams.get("token");
     if (token) {
       const decoded = await verifyToken(token, env.JWT_SECRET);
       console.log(decoded);

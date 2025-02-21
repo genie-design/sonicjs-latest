@@ -14,11 +14,10 @@ export const definition = {
     .notNull()
     .references(() => users.table.id),
   provider_user_id: text('provider_user_id', { length: 255 }).notNull(),
-  provider: text('provider', { enum: ['EMAIL', 'TOKEN'] })
+  provider: text('provider', { enum: ['EMAIL', 'SINGLE_WS'] })
     .notNull()
     .default('EMAIL'),
   hashed_password: text('hashed_password'),
-  token: text('token'),
 };
 
 export const table = sqliteTable(tableName, {
