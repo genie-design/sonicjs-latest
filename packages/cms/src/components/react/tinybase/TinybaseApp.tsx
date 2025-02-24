@@ -30,6 +30,7 @@ const urlProvider = async () => {
 };
 export const TinybaseApp = () => {
   const store = useCreateMergeableStore(createMergeableStore);
+  window.store = store;
 
   useCreatePersister(
     store,
@@ -53,7 +54,10 @@ export const TinybaseApp = () => {
     },
   );
 
-  const ws = new ReconnectingWebSocket(urlProvider, undefined, { debug });
+  const ws = new ReconnectingWebSocket(urlProvider, undefined, {
+    debug,
+    maxRetries: 0,
+  });
 
   useCreateSynchronizer(store, async (store: MergeableStore) => {
     const synchronizer = await createWsSynchronizer(store, ws, 1);
