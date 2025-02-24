@@ -17,6 +17,14 @@ const PERSIST_TO_DURABLE_OBJECT = true;
 export class TinyBaseDurableObject extends WsServerDurableObject {
   store: MergeableStore | undefined;
   async fetch(request: Request) {
+    // const allEntries = await this.ctx.storage.list();
+    // console.log(allEntries);
+    console.log("Durable Object Fetch", {
+      clients: this.getClientIds(),
+    });
+    if (this.getClientIds().length > 0) {
+      console.log("path", this.getPathId());
+    }
     if (request.url.includes("storage-keys")) {
       return new Response(JSON.stringify(await this.ctx.storage.list()));
     } else if (request.url.includes("__api__")) {
@@ -26,7 +34,7 @@ export class TinyBaseDurableObject extends WsServerDurableObject {
   }
 
   onMessage(fromClientId: Id, toClientId: Id, remainder: string): void {
-    console.log("MESSAGE:", { fromClientId, toClientId, remainder });
+    // console.log("MESSAGE:", { fromClientId, toClientId, remainder });
   }
 
   onPathId(pathId: Id, addedOrRemoved: IdAddedOrRemoved) {
