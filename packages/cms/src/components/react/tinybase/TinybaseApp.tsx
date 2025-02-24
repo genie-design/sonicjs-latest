@@ -30,6 +30,7 @@ const urlProvider = async () => {
 };
 export const TinybaseApp = () => {
   const store = useCreateMergeableStore(createMergeableStore);
+  window.store = store;
 
   useCreatePersister(
     store,
