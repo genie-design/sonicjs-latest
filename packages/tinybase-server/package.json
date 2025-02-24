@@ -2,13 +2,13 @@
   "name": "@sonicjs/tinybase-server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "ws-server.ts",
   "author": "jamesgpearce",
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "deploy": "wrangler deploy ./index.ts",
-    "dev": "wrangler dev ./index.ts"
+    "deploy": "wrangler deploy ./ws-server.ts",
+    "dev": "wrangler dev ./ws-server.ts --persist-to ../../.wrangler"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241018.0",

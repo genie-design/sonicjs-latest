@@ -63,7 +63,7 @@ export class TinyBaseDurableObject extends WsServerDurableObject {
   }
 
   onMessage(fromClientId: Id, toClientId: Id, remainder: string): void {
-    // console.log("MESSAGE:", { fromClientId, toClientId, remainder });
+    console.log("MESSAGE:", { fromClientId, toClientId, remainder });
   }
 
   onPathId(pathId: Id, addedOrRemoved: IdAddedOrRemoved) {
@@ -103,31 +103,47 @@ export default {
     console.log("URL:", request.url);
     const token = new URL(request.url).searchParams.get("token");
     if (token) {
-      const decoded = await verifyToken(token, env.JWT_SECRET, env.DB);
-      console.log(decoded);
+      const user = await verifyToken(token, env.JWT_SECRET, env.DB);
+      if (user) {
+        console.log("user", user);
+        return tinybaseFetch(request, env);
+      } else {
+        return new Response("Unauthorized", { status: 401 });
+      }
     }
-    return tinybaseFetch(request, env);
+    return new Response("Unauthorized", { status: 401 });
   },
 };
 
 async function verifyToken(token: string, secret: string, DB: D1Database) {
   try {
     const decoded = await verify<JWTPayload>(token, secret);
-    console.log("decoded", decoded);
+    // console.log("decoded", decoded);
     if (!decoded?.payload) throw new Error("Invalid token");
-    const sessions = await DB.prepare("SELECT * FROM user_sessions").all();
-    console.log("sessions", sessions);
+    const sessions = await DB.prepare("SELECT * FROM user_keys").all();
+    // console.log("sessions", sessions);
     const key = await DB.prepare(
       "SELECT * FROM user_keys WHERE provider = ? AND provider_user_id = ?"
     )
-      .bind("SINGLE_WS", decoded.payload.userid)
+      .bind("SINGLE_WS", token)
       .first();
-    console.log("key", key);
+    // console.log("key", key);
     if (!key) throw new Error("Invalid token");
+
+    await DB.prepare(
+      "DELETE FROM user_keys WHERE provider = ? AND provider_user_id = ?"
+    )
+      .bind("SINGLE_WS", token)
+      .run();
+
     console.log("key.user_id", key.user_id);
     if (key.user_id !== decoded.payload.userid)
       throw new Error("Invalid token");
-    return decoded;
+
+    const user = await DB.prepare("SELECT * FROM users WHERE id = ?")
+      .bind(key.user_id)
+      .first();
+    return user;
   } catch (error) {
     console.error("Error verifying token", error);
   }

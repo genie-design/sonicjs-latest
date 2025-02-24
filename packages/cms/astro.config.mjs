@@ -27,7 +27,11 @@ export default defineConfig({
       },
     }),
   ],
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    platformProxy: {
+      persist: { path: "../../.wrangler/v3" },
+    }
+  }),
 
   vite: {
     plugins: [tailwindcss()],
