@@ -19,12 +19,12 @@ export class TinyBaseDurableObject extends WsServerDurableObject {
   async fetch(request: Request) {
     // const allEntries = await this.ctx.storage.list();
     // console.log(allEntries);
-    console.log("Durable Object Fetch", {
-      clients: this.getClientIds(),
-    });
-    if (this.getClientIds().length > 0) {
-      console.log("path", this.getPathId());
-    }
+    // console.log("Durable Object Fetch", {
+    //   clients: this.getClientIds(),
+    // });
+    // if (this.getClientIds().length > 0) {
+    //   console.log("path", this.getPathId());
+    // }
     if (request.url.includes("storage-keys")) {
       return new Response(JSON.stringify(await this.ctx.storage.list()));
     } else if (request.url.includes("__api__")) {
@@ -110,7 +110,6 @@ export default {
       DB: D1Database;
     }
   ) => {
-    console.log("URL:", request.url);
     const token = new URL(request.url).searchParams.get("token");
     if (token) {
       // const decoded = await verifyToken(token, env.JWT_SECRET, env.DB);

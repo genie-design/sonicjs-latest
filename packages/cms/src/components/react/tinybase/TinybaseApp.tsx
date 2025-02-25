@@ -31,35 +31,32 @@ const urlProvider = async () => {
 export const TinybaseApp = () => {
   const store = useCreateMergeableStore(createMergeableStore);
   window.store = store;
-
-  useCreatePersister(
-    store,
-    (store) => createLocalPersister(store, 'local://' + SERVER + serverPathId),
-    [],
-    async (persister) => {
-      await persister.startAutoLoad([
-        {
-          pets: { '0': { name: 'fido', species: 'dog' } },
-          species: {
-            dog: { price: 5 },
-            cat: { price: 4 },
-            fish: { price: 2 },
-            worm: { price: 1 },
-            parrot: { price: 3 },
-          },
-        },
-        { counter: 0 },
-      ]);
-      await persister.startAutoSave();
-    },
-  );
-
-  const ws = new ReconnectingWebSocket(urlProvider, undefined, {
-    debug,
-    maxRetries: 0,
-  });
+  // useCreatePersister(
+  //   store,
+  //   (store) => createLocalPersister(store, 'local://' + SERVER + serverPathId),
+  //   [],
+  //   async (persister) => {
+  //     await persister.startAutoLoad([
+  //       {
+  //         pets: { '0': { name: 'fido', species: 'dog' } },
+  //         species: {
+  //           dog: { price: 5 },
+  //           cat: { price: 4 },
+  //           fish: { price: 2 },
+  //           worm: { price: 1 },
+  //           parrot: { price: 3 },
+  //         },
+  //       },
+  //       { counter: 0 },
+  //     ]);
+  //     await persister.startAutoSave();
+  //   },
+  // );
 
   useCreateSynchronizer(store, async (store: MergeableStore) => {
+    const ws = new ReconnectingWebSocket(urlProvider, undefined, {
+      debug,
+    });
     const synchronizer = await createWsSynchronizer(store, ws, 1);
     await synchronizer.startSync();
 

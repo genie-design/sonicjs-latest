@@ -1,0 +1,101 @@
+diff --git a/mergeable-store/index.js b/mergeable-store/index.js
+index eef5bf4fd46a234b616a2d80f73fd3ac979a759b..45147b2c56e2c19e23a4a586fe9f817d6891945c 100644
+--- a/mergeable-store/index.js
++++ b/mergeable-store/index.js
+@@ -784,6 +784,7 @@ const createStore = () => {
+     );
+   };
+   const cellChanged = (tableId, rowId, cellId, oldCell, newCell) => {
++    console.log("cellChanged", {tableId, rowId, cellId, oldCell, newCell});
+     mapEnsure(
+       mapEnsure(mapEnsure(changedCells, tableId, mapNew), rowId, mapNew),
+       cellId,
+@@ -1988,6 +1989,7 @@ const createMergeableStore = (uniqueId) => {
+     collClear(touchedValues);
+   };
+   const cellChanged = (tableId, rowId, cellId, newCell) => {
++    console.log("cellChanged bam", {tableId, rowId, cellId, newCell});
+     setAdd(
+       mapEnsure(mapEnsure(touchedCells, tableId, mapNew), rowId, setNew),
+       cellId,
+@@ -2219,10 +2221,14 @@ const createMergeableStore = (uniqueId) => {
+     ];
+   };
+   const applyMergeableChanges = (mergeableChanges) =>
+-    disableListeningToRawStoreChanges(() =>
++{ 
++  console.log("applyMergeableChanges", {mergeableChanges});
++return    disableListeningToRawStoreChanges(() =>
+       store.applyChanges(mergeContentOrChanges(mergeableChanges)),
+     );
++ }
+   const merge = (mergeableStore2) => {
++    console.log("merge");
+     const mergeableChanges = getMergeableContent();
+     const mergeableChanges2 = mergeableStore2.getMergeableContent();
+     mergeableStore2.applyMergeableChanges(mergeableChanges);
+diff --git a/synchronizers/synchronizer-ws-server-durable-object/index.js b/synchronizers/synchronizer-ws-server-durable-object/index.js
+index 82cddc855b3b0f0a4843518e365f4bfb9fa624b8..9bccc07f9571ea71ea3256fea26984acabf1229e 100644
+--- a/synchronizers/synchronizer-ws-server-durable-object/index.js
++++ b/synchronizers/synchronizer-ws-server-durable-object/index.js
+@@ -78,9 +78,12 @@ const ifPayloadValid = (payload, then) => {
+   }
+ };
+ const receivePayload = (payload, receive) =>
+-  ifPayloadValid(payload, (fromClientId, remainder) =>
++{ 
++  console.log("synchronizer receivePayload", {payload, receive});
++return  ifPayloadValid(payload, (fromClientId, remainder) =>
+     receive(fromClientId, ...jsonParseWithUndefined(remainder)),
+   );
++ }
+ const createPayload = (toClientId, ...args) =>
+   createRawPayload(toClientId ?? EMPTY_STRING, jsonStringWithUndefined(args));
+ const createRawPayload = (clientId, remainder) =>
+@@ -623,7 +626,9 @@ const createCustomSynchronizer = (
+   registerReceive((fromClientId, transactionOrRequestId, message, body) => {
+     const isAutoLoading = syncing || persister.isAutoLoading();
+     receives++;
++    console.log("synchronizer receive", {fromClientId, transactionOrRequestId, message, body});
+     if (message == 0 /* Response */) {
++      console.log("synchronizer receiveResponse", {pendingRequests,  fromClientId,transactionOrRequestId, body});
+       ifNotUndefined(
+         mapGet(pendingRequests, transactionOrRequestId),
+         ([toClientId, handleResponse]) =>
+@@ -745,21 +750,36 @@ class WsServerDurableObject extends DurableObject {
+   }
+   // --
+   #handleMessage(fromClientId, message, fromClient) {
++    console.log("--------------------------------");
++    console.log("handleMessage");
++
++    console.log("synchronizer handleMessage", {fromClientId, message, fromClient});
++
++    if (fromClientId === 'S' && message.includes('polly')) {
++      console.log(new Error().stack);
++    }
+     ifPayloadValid(message.toString(), (toClientId, remainder) => {
++      console.log("synchronizer ifPayloadValid", {toClientId, remainder});
+       const forwardedPayload = createRawPayload(fromClientId, remainder);
++      console.log("synchronizer forwardedPayload", forwardedPayload);
+       this.onMessage(fromClientId, toClientId, remainder);
+       if (toClientId == EMPTY_STRING) {
+         if (fromClientId != SERVER_CLIENT_ID) {
++          console.log("synchronizer fromClientId != SERVER_CLIENT_ID");
+           this.#serverClientSend?.(forwardedPayload);
+         }
+         arrayForEach(this.#getClients(), (otherClient) => {
++          console.log("synchronizer otherClient", otherClient);
+           if (otherClient != fromClient) {
++            console.log("synchronizer otherClient != fromClient");
+             otherClient.send(forwardedPayload);
+           }
+         });
+       } else if (toClientId == SERVER_CLIENT_ID) {
++        console.log("synchronizer toClientId == SERVER_CLIENT_ID");
+         this.#serverClientSend?.(forwardedPayload);
+       } else if (toClientId != fromClientId) {
++        console.log("synchronizer toClientId != fromClientId");
+         this.#getClients(toClientId)[0]?.send(forwardedPayload);
+       }
+     });

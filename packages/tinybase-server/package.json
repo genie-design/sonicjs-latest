@@ -7,8 +7,8 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "deploy": "wrangler deploy ./index.ts",
-    "dev": "wrangler dev ./index.ts"
+    "deploy": "wrangler deploy ./ws-server.ts",
+    "dev": "wrangler dev ./ws-server.ts"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241018.0",

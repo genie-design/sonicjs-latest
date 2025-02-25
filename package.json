@@ -10,7 +10,12 @@
     "format": "pnpm -r format"
   },
   "devDependencies": {
-    "typescript": "^5.3.3",
-    "prettier": "^3.2.5"
+    "prettier": "^3.2.5",
+    "typescript": "^5.3.3"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "tinybase@5.4.8": "patches/tinybase@5.4.8.patch"
+    }
   }
 }
