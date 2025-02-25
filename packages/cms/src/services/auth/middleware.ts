@@ -1,5 +1,14 @@
 import type { APIContext } from 'astro';
 
+export const preventCSRF = async (context: APIContext) => {
+  const origin = context.request.headers.get('origin');
+  if (context.request.method !== 'GET') {
+    if (origin === null || !origin.includes('localhost')) {
+      context.locals.logger.trace('Origin not allowed');
+      return new Response(`Origin not allowed: ${origin}`, { status: 403 });
+    }
+  }
+};
 export const setUser = async (context: APIContext) => {
   if (!context.locals.user) {
     // Get session token from cookie
