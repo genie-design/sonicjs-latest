@@ -1,0 +1,7 @@
+---
+description: installilng packages
+globs: 
+alwaysApply: false
+---
+
+when installing packages, use pnpm

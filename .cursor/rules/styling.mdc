@@ -1,0 +1,33 @@
+---
+description: Styling guidelines with Tailwind CSS
+globs: ["**/*.tsx", "**/*.astro", "**/*.jsx", "**/*.html"]
+---
+
+# Styling Guidelines
+
+## Tailwind CSS Usage
+- Always use Tailwind classes for styling HTML elements
+- Avoid using raw CSS or style tags
+- Use "class:" directive instead of ternary operators for conditional classes
+- Leverage Tailwind's responsive design utilities (sm:, md:, lg:, etc.)
+- Utilize Tailwind's color palette and spacing scale for consistency
+- Never use the @apply directive
+
+## Responsive Design
+- Implement mobile-first design approach
+- Use Tailwind's breakpoint prefixes appropriately
+- Ensure proper spacing across different screen sizes
+- Maintain consistent typography scaling
+
+## Best Practices
+- Keep class lists organized and readable
+- Use appropriate spacing utilities
+- Implement proper hover, focus, and active states
+- Ensure proper contrast ratios for accessibility
+- Use semantic HTML elements with appropriate styling
+
+## Component Styling
+- Maintain consistent styling patterns across components
+- Use Tailwind's component classes when applicable
+- Implement proper dark mode support if needed
+- Ensure proper styling for interactive states

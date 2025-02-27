@@ -1,0 +1,40 @@
+---
+description: React and TypeScript development guidelines
+globs: ["**/*.tsx", "**/*.ts"]
+---
+
+# React and TypeScript Development Guidelines
+
+## Code Style
+- Use early returns for better readability
+- Use descriptive variable and function names
+- Prefix event handlers with "handle" (e.g., handleClick, handleKeyDown)
+- Use const arrow functions instead of regular functions
+- Define TypeScript types whenever possible
+
+## Component Development
+- Follow DRY (Don't Repeat Yourself) principles
+- Implement proper accessibility features
+  - Use tabindex="0" for interactive elements
+  - Include aria-labels
+  - Implement keyboard event handlers
+- Use proper event handling patterns
+- Leave no TODOs or placeholders
+- Include all required imports
+
+## State Management
+- Use appropriate React hooks
+- Implement proper state management patterns
+- Handle side effects correctly
+
+## TypeScript Best Practices
+- Define proper interfaces and types
+- Use TypeScript's type system effectively
+- Avoid using 'any' type
+- Leverage TypeScript's built-in utility types
+
+## Error Handling
+- Implement proper error boundaries
+- Use try-catch blocks where appropriate
+- Provide meaningful error messages
+- Handle edge cases appropriately

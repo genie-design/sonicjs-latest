@@ -1,0 +1,61 @@
+---
+description: Comprehensive Astro development guidelines
+globs: ["**/*.astro", "**/*.ts", "**/*.tsx"]
+---
+
+# Astro Development Guidelines
+
+## Key Principles
+- Write concise, technical responses with accurate Astro examples
+- Leverage Astro's partial hydration and multi-framework support
+- Prioritize static generation and minimal JavaScript
+- Use descriptive variable names and follow Astro naming conventions
+- Organize files using Astro's file-based routing system
+
+## Component Development
+- Create .astro files for Astro components
+- Use framework-specific components (React) when necessary
+- Implement proper component composition and reusability
+- Use Astro's component props for data passing
+- Leverage Astro's built-in components
+- Wrap typescript code in --- at the top and bottom when writing astro files
+
+## Routing and Pages
+- Use file-based routing in src/pages/
+- Implement dynamic routes using [...slug].astro
+- Use getStaticPaths() for static pages with dynamic routes
+- Implement proper 404 handling
+
+## Content Management
+- Use Markdown (.md) or MDX (.mdx) for content-heavy pages
+- Leverage frontmatter in Markdown files
+- Implement content collections
+
+## Styling
+- Use Astro's scoped styling with <style> tags
+- Leverage global styles when necessary
+- Utilize CSS preprocessing if required
+- Implement responsive design
+
+## Performance
+- Minimize client-side JavaScript
+- Use client:* directives judiciously:
+  - client:load for immediate interactivity
+  - client:idle for non-critical features
+  - client:visible for visible hydration
+- Implement proper lazy loading
+- Use Astro's asset optimization
+
+## Data and SEO
+- Use Astro.props for data passing
+- Implement getStaticPaths() for build-time data
+- Use Astro.glob() for local files
+- Implement proper SEO meta tags
+- Use canonical URLs
+
+## Development Workflow
+- Don't run `tsc` to compile typescript code or check for errors, use the editor
+- Use Astro integrations for extending functionality
+- Implement proper environment variable handling
+- Follow accessibility best practices
+- Ensure proper semantic HTML structure
