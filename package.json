@@ -1,6 +1,7 @@
 {
   "name": "sonicjs-monorepo",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "dev:cms": "pnpm --filter @sonicjs/cms dev",
     "dev:server": "pnpm --filter @sonicjs/tinybase-server dev",
