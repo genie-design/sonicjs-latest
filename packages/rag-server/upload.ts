@@ -30,11 +30,15 @@ import { DrizzleError } from "drizzle-orm";
  * @param sessionIdentifier - The session ID to associate with the file
  * @returns The R2 URL/key where the file is stored
  */
-async function storeFileInR2(
-  pdfFile: File,
-  storageContainer: R2Bucket,
-  sessionIdentifier: string
-): Promise<string> {
+async function storeFileInR2({
+  pdfFile,
+  storageContainer,
+  sessionIdentifier,
+}: {
+  pdfFile: File;
+  storageContainer: R2Bucket;
+  sessionIdentifier: string;
+}): Promise<string> {
   // Create a unique key using sessionIdentifier, timestamp, and filename
   const storageKey = `${sessionIdentifier}/${Date.now()}-${pdfFile.name}`;
   await storageContainer.put(storageKey, await pdfFile.arrayBuffer(), {
@@ -50,7 +54,11 @@ async function storeFileInR2(
  * @param pdfFile - The PDF file to extract text from
  * @returns The extracted text content as a string
  */
-async function parsePdfContent(pdfFile: File): Promise<string> {
+async function parsePdfContent({
+  pdfFile,
+}: {
+  pdfFile: File;
+}): Promise<string> {
   const fileBuffer = await pdfFile.arrayBuffer();
   const pdfDocument = await getDocumentProxy(new Uint8Array(fileBuffer));
   const extractionResult = await extractText(pdfDocument, { mergePages: true });
@@ -70,13 +78,19 @@ async function parsePdfContent(pdfFile: File): Promise<string> {
  * @param storageUrl - The R2 storage URL
  * @returns The inserted document ID
  */
-async function saveDocumentMetadata(
-  dbConnection: any,
-  pdfFile: File,
-  extractedContent: string,
-  sessionIdentifier: string,
-  storageUrl: string
-) {
+async function saveDocumentMetadata({
+  dbConnection,
+  pdfFile,
+  extractedContent,
+  sessionIdentifier,
+  storageUrl,
+}: {
+  dbConnection: any;
+  pdfFile: File;
+  extractedContent: string;
+  sessionIdentifier: string;
+  storageUrl: string;
+}) {
   console.log("Inserting document...", {
     pdfFile,
     extractedContent,
@@ -112,16 +126,25 @@ async function saveDocumentMetadata(
  * @param documentIdentifier - The document ID
  * @param sendProgressUpdate - Function to stream progress updates to client
  */
-async function processAndStoreEmbeddings(
-  dbConnection: DrizzleD1Database<any>,
-  vectorIndex: VectorizeIndex,
-  aiService: any,
-  textChunks: string[],
-  pdfFile: File,
-  sessionIdentifier: string,
-  documentIdentifier: string,
-  sendProgressUpdate: (message: any) => Promise<void>
-) {
+async function processAndStoreEmbeddings({
+  dbConnection,
+  vectorIndex,
+  aiService,
+  textChunks,
+  pdfFile,
+  sessionIdentifier,
+  documentIdentifier,
+  sendProgressUpdate,
+}: {
+  dbConnection: DrizzleD1Database<any>;
+  vectorIndex: VectorizeIndex;
+  aiService: any;
+  textChunks: string[];
+  pdfFile: File;
+  sessionIdentifier: string;
+  documentIdentifier: string;
+  sendProgressUpdate: (message: any) => Promise<void>;
+}) {
   console.log("Inserting vectors...", {
     pdfFile,
     sessionIdentifier,
@@ -271,20 +294,24 @@ export const onRequest: PagesFunction<Env> = async (ctx) => {
 
         // Parallelize file upload and text extraction for efficiency
         const [storageUrl, extractedContent] = await Promise.all([
-          storeFileInR2(pdfFile, ctx.env.R2_BUCKET, sessionIdentifier),
-          parsePdfContent(pdfFile),
+          storeFileInR2({
+            pdfFile,
+            storageContainer: ctx.env.R2_BUCKET,
+            sessionIdentifier,
+          }),
+          parsePdfContent({ pdfFile }),
         ]);
 
         await sendProgressUpdate({ message: "Extracted text from PDF" });
 
         // Insert document metadata and get document ID
-        const insertResult = await saveDocumentMetadata(
+        const insertResult = await saveDocumentMetadata({
           dbConnection,
           pdfFile,
           extractedContent,
           sessionIdentifier,
-          storageUrl
-        );
+          storageUrl,
+        });
 
         // Split text into chunks for vector embedding
         const textSplitter = new RecursiveCharacterTextSplitter({
@@ -295,16 +322,16 @@ export const onRequest: PagesFunction<Env> = async (ctx) => {
         const textChunks = await textSplitter.splitText(extractedContent);
 
         // Process chunks and generate vector embeddings
-        await processAndStoreEmbeddings(
+        await processAndStoreEmbeddings({
           dbConnection,
-          ctx.env.VECTORIZE_INDEX,
-          ctx.env.AI,
+          vectorIndex: ctx.env.VECTORIZE_INDEX,
+          aiService: ctx.env.AI,
           textChunks,
           pdfFile,
           sessionIdentifier,
-          insertResult[0].insertedId,
-          sendProgressUpdate
-        );
+          documentIdentifier: insertResult[0].insertedId,
+          sendProgressUpdate,
+        });
 
         // Send final success response with file info
         const documentSummary = {
