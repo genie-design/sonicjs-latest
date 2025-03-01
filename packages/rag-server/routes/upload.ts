@@ -182,8 +182,11 @@ async function processAndStoreEmbeddings({
 
 // POST endpoint for file upload with streaming response
 app.post("/", async (c) => {
+  c.header("Content-Encoding", "Identity");
+  const formData = await c.req.formData();
   return streamText(c, async (stream) => {
     try {
+      console.log("Uploading file...");
       const clientIpAddress = c.req.header("cf-connecting-ip") || "";
 
       // Basic rate limiting to prevent abuse
@@ -215,9 +218,10 @@ app.post("/", async (c) => {
       };
 
       // Parse form data
-      const formData = await c.req.formData();
       const pdfFile = formData.get("file") as File;
       const sessionId = (formData.get("sessionId") as string) || ulid();
+
+      console.log("Session ID:", sessionId);
 
       // Validate input
       if (!pdfFile || !(pdfFile instanceof File)) {
@@ -235,6 +239,7 @@ app.post("/", async (c) => {
 
       // Step 1: Upload file to R2
       await sendProgressUpdate({ message: "Uploading file..." });
+      console.info("Uploading file to R2...");
       const r2Url = await storeFileInR2({
         pdfFile,
         storageContainer: c.env.R2_BUCKET,
@@ -243,10 +248,12 @@ app.post("/", async (c) => {
 
       // Step 2: Extract text from PDF
       await sendProgressUpdate({ message: "Extracting text..." });
+      console.info("Extracting text from PDF...");
       const extractedText = await parsePdfContent({ pdfFile });
 
       // Step 3: Save document metadata
       await sendProgressUpdate({ message: "Saving document metadata..." });
+      console.info("Saving document metadata...");
       const documentResult = await saveDocumentMetadata({
         dbConnection: db,
         pdfFile,
@@ -259,6 +266,7 @@ app.post("/", async (c) => {
 
       // Step 4: Split text into chunks
       await sendProgressUpdate({ message: "Splitting text into chunks..." });
+      console.info("Splitting text into chunks...");
       const textSplitter = new RecursiveCharacterTextSplitter({
         chunkSize: 1000,
         chunkOverlap: 200,
@@ -270,7 +278,7 @@ app.post("/", async (c) => {
         message: "Processing chunks and generating embeddings...",
         totalChunks: textChunks.length,
       });
-
+      console.info("Processing chunks and generating embeddings...");
       await processAndStoreEmbeddings({
         dbConnection: db,
         vectorIndex: c.env.VECTORIZE_INDEX,
@@ -289,7 +297,9 @@ app.post("/", async (c) => {
         sessionId,
         status: "success",
       });
+      console.info("Processing complete");
     } catch (error) {
+      console.error("Error:", error);
       // Handle errors
       await stream.write(
         JSON.stringify({
