@@ -1,12 +1,14 @@
 ---
 import AdminPage from '../../layouts/AdminPage.astro';
 import LandingPage from '../../layouts/LandingPage.astro';
+import SonicTinybase from '../../components/react/tinybase/SonicTinybaseMenuItems.tsx';
 ---
 
 <LandingPage>
   <div class="-mt-20 h-full">
-    <AdminPage server:defer>
+    <!-- <AdminPage server:defer>
       <h1>Admin</h1>
-    </AdminPage>
+    </AdminPage> -->
+    <SonicTinybase client:only="react" />
   </div>
 </LandingPage>

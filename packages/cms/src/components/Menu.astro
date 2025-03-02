@@ -1,0 +1,21 @@
+---
+import SonicTinybaseMenuItems from './react/tinybase/SonicTinybaseMenuItems';
+---
+
+<div class="flex flex-col gap-4">
+  <!-- Left Sidebar -->
+
+  <nav class="hidden space-y-4 lg:block">
+    <ul class="menu bg-base-200/50 rounded-box w-full">
+      <li class="menu-title">Sonic Tinybase</li>
+      <SonicTinybaseMenuItems client:only="react" />
+    </ul>
+  </nav>
+  <div class="bg-base-200/50 rounded-2xl p-6 backdrop-blur-sm">
+    <h2 class="mb-4 text-xl font-bold">Featured</h2>
+    <p class="text-base-content/80">
+      Discover our latest innovations in local first Content Management System
+      technology.
+    </p>
+  </div>
+</div>

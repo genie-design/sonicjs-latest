@@ -1,4 +1,3 @@
-import { verify } from "@tsndr/cloudflare-worker-jwt";
 import {
   createMergeableStore,
   Id,
@@ -8,6 +7,7 @@ import {
 import { createDurableObjectStoragePersister } from "tinybase/persisters/persister-durable-object-storage";
 import { WsServerDurableObject } from "tinybase/synchronizers/synchronizer-ws-server-durable-object";
 import { handleApiRequest } from "./api";
+import { defaultSonicSchemas, sonicSchema } from "./sonicSchema";
 // Whether to persist data in the Durable Object between client sessions.
 //
 // If false, the Durable Object only provides synchronization between clients
@@ -34,13 +34,39 @@ export class TinyBaseDurableObject extends WsServerDurableObject {
   }
 
   onMessage(fromClientId: Id, toClientId: Id, remainder: string): void {
-    console.log("MESSAGE:", { fromClientId, toClientId, remainder });
+    // console.log("MESSAGE:", { fromClientId, toClientId, remainder });
   }
 
   onPathId(pathId: Id, addedOrRemoved: IdAddedOrRemoved) {
     console.info(
       (addedOrRemoved > 0 ? "Added" : "Removed") + ` path ${pathId}`
     );
+    if (this.store && pathId === "sonicSchemas") {
+      console.log("SET SCHEMA");
+      console.log(this.store.getContent());
+      const schema = sonicSchema();
+      this.store.setTablesSchema(schema);
+
+      if (!this.store.hasTable("sonicSchemas")) {
+        console.log("SET DEFAULT SCHEMA");
+        const schemas = defaultSonicSchemas();
+        this.store.setTable("sonicSchemas", {
+          "0": {
+            id: 0,
+            schemaId: "users",
+            schemaName: "Users",
+            tinybaseSchema: JSON.stringify(schemas.users),
+          },
+          "1": {
+            id: 1,
+            schemaId: "tabletopGames",
+            schemaName: "Tabletop Games",
+            tinybaseSchema: JSON.stringify(schemas.tabletopGames),
+          },
+        });
+        console.log("SET DEFAULT SCHEMA", this.store.getContent());
+      }
+    }
   }
 
   onClientId(pathId: Id, clientId: Id, addedOrRemoved: IdAddedOrRemoved) {
@@ -52,8 +78,8 @@ export class TinyBaseDurableObject extends WsServerDurableObject {
 
   createPersister() {
     if (PERSIST_TO_DURABLE_OBJECT) {
-      console.log("STORAGE CREATED");
       this.store = this.store ?? createMergeableStore();
+
       return createDurableObjectStoragePersister(this.store, this.ctx.storage);
     }
   }
@@ -92,7 +118,6 @@ const getWsServerDurableObjectFetch =
     }
     if (getClientId(request) || request.url.includes("__api__")) {
       const id = DO.idFromName(getPathId(request));
-      console.log("id", id);
       return DO.get(id).fetch(request);
     } else {
       return new Response("Upgrade required", { status: 426 });
@@ -110,50 +135,6 @@ export default {
       DB: D1Database;
     }
   ) => {
-    const token = new URL(request.url).searchParams.get("token");
-    if (token) {
-      // const decoded = await verifyToken(token, env.JWT_SECRET, env.DB);
-      // console.log(decoded);
-    }
     return getWsServerDurableObjectFetch("TinyBaseDurableObject")(request, env);
   },
 };
-
-async function verifyToken(token: string, secret: string, DB: D1Database) {
-  try {
-    const decoded = await verify<JWTPayload>(token, secret);
-    // console.log("decoded", decoded);
-    if (!decoded?.payload) throw new Error("Invalid token");
-    const sessions = await DB.prepare("SELECT * FROM user_keys").all();
-    // console.log("sessions", sessions);
-    const key = await DB.prepare(
-      "SELECT * FROM user_keys WHERE provider = ? AND provider_user_id = ?"
-    )
-      .bind("SINGLE_WS", token)
-      .first();
-    // console.log("key", key);
-    if (!key) throw new Error("Invalid token");
-
-    await DB.prepare(
-      "DELETE FROM user_keys WHERE provider = ? AND provider_user_id = ?"
-    )
-      .bind("SINGLE_WS", token)
-      .run();
-
-    console.log("key.user_id", key.user_id);
-    if (key.user_id !== decoded.payload.userid)
-      throw new Error("Invalid token");
-
-    const user = await DB.prepare("SELECT * FROM users WHERE id = ?")
-      .bind(key.user_id)
-      .first();
-    return user;
-  } catch (error) {
-    console.error("Error verifying token", error);
-  }
-}
-interface JWTPayload {
-  userid: string;
-  email: string | null;
-  exp: number;
-}

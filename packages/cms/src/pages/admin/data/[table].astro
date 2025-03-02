@@ -1,0 +1,17 @@
+---
+export const prerender = false;
+import ContentLayout from '@/layouts/ContentPage.astro';
+import { TinybaseTable } from '@/components/react/TinybaseTable';
+const { table } = Astro.params;
+---
+
+<ContentLayout>
+  {
+    table && (
+      <div>
+        <h1>{table}</h1>
+        <TinybaseTable schemaId={table} client:only="react" />
+      </div>
+    )
+  }
+</ContentLayout>

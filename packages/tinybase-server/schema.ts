@@ -1,4 +1,5 @@
 import type { Cell, CellOrUndefined, CellSchema, TablesSchema } from "tinybase";
+import type { Relationships } from "tinybase/relationships";
 
 // Types for our schema builders
 export type SchemaBuilderBase<T extends Cell> = {
@@ -10,6 +11,29 @@ export type SchemaBuilderBase<T extends Cell> = {
   defaultValue?: CellOrUndefined;
   id?: string; // For alternative column ID
   _type: T;
+};
+
+// Type for remote row ID getter function
+export type RemoteRowIdGetter = (
+  getCell: (cellId: string) => CellOrUndefined,
+  localRowId: string
+) => string;
+
+// Relationship builder type
+export type RelationBuilderBase<
+  LocalT extends Cell = Cell,
+  RemoteT extends Cell = Cell,
+> = {
+  relationshipId: string;
+  localTableId: string;
+  remoteTableId: string;
+  getRemoteRowId: string | RemoteRowIdGetter;
+  localSchema: SchemaBuilderBase<LocalT>;
+  remoteSchema: SchemaBuilderBase<RemoteT>;
+  // Method to use a custom function for deriving the remote row ID
+  withCustomMapping: (
+    fn: RemoteRowIdGetter
+  ) => RelationBuilderBase<LocalT, RemoteT>;
 };
 
 // Base builder factory
@@ -61,13 +85,19 @@ export function createSchema<T extends Record<string, SchemaBuilderBase<any>>>(
 }
 
 // Convenience function to create and apply schema to a store
-export function applySchema<T extends Record<string, SchemaBuilderBase<any>>>(
+export function applySchemas<T extends Record<string, SchemaBuilderBase<any>>>(
   store: {
     setTablesSchema: (schema: TablesSchema) => void;
   },
-  tableName: string,
-  schema: T
+  schemas: Record<string, T>
 ): void {
-  const tinybaseSchema = createSchema(tableName, schema);
-  store.setTablesSchema(tinybaseSchema);
+  let tinybaseSchemas: TablesSchema = {};
+  for (const [tableName, schema] of Object.entries(schemas)) {
+    tinybaseSchemas = {
+      ...tinybaseSchemas,
+      ...createSchema(tableName, schema),
+    };
+  }
+
+  store.setTablesSchema(tinybaseSchemas);
 }

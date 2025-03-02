@@ -34,6 +34,9 @@ importers:
       '@astrojs/tailwind':
         specifier: ^6.0.0
         version: 6.0.0(astro@5.3.0(@types/node@22.13.4)(jiti@2.4.2)(lightningcss@1.29.1)(rollup@4.34.8)(tsx@4.19.3)(typescript@5.7.3)(yaml@2.7.0))(tailwindcss@4.0.7)
+      '@nanostores/react':
+        specifier: ^0.8.4
+        version: 0.8.4(nanostores@0.11.4)(react@19.0.0)
       '@sentry/astro':
         specifier: ^9.1.0
         version: 9.1.0(astro@5.3.0(@types/node@22.13.4)(jiti@2.4.2)(lightningcss@1.29.1)(rollup@4.34.8)(tsx@4.19.3)(typescript@5.7.3)(yaml@2.7.0))
@@ -88,6 +91,9 @@ importers:
       drizzle-orm:
         specifier: ^0.39.3
         version: 0.39.3(@cloudflare/workers-types@4.20250214.0)(@opentelemetry/api@1.9.0)(@types/pg@8.6.1)(better-sqlite3@11.8.1)
+      nanostores:
+        specifier: ^0.11.4
+        version: 0.11.4
       pino:
         specifier: ^9.6.0
         version: 9.6.0
@@ -1437,6 +1443,13 @@ packages:
   '@mapbox/node-pre-gyp@1.0.11':
     resolution: {integrity: sha512-Yhlar6v9WQgUp/He7BdgzOz8lqMQ8sU+jkCq7Wx8Myc5YFJLbEe7lgui/V7G1qB1DJykHSGwreceSaD60Y0PUQ==}
     hasBin: true
+
+  '@nanostores/react@0.8.4':
+    resolution: {integrity: sha512-EciHSzDXg7GmGODjegGG1VldPEinbAK+12/Uz5+MAdHmxf082Rl6eXqKFxAAu4pZAcr5dNTpv6wMfEe7XacjkQ==}
+    engines: {node: ^18.0.0 || >=20.0.0}
+    peerDependencies:
+      nanostores: ^0.9.0 || ^0.10.0 || ^0.11.0
+      react: '>=18.0.0'
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -4171,6 +4184,10 @@ packages:
     engines: {node: ^18 || >=20}
     hasBin: true
 
+  nanostores@0.11.4:
+    resolution: {integrity: sha512-k1oiVNN4hDK8NcNERSZLQiMfRzEGtfnvZvdBvey3SQbgn8Dcrk0h1I6vpxApjb10PFUflZrgJ2WEZyJQ+5v7YQ==}
+    engines: {node: ^18.0.0 || >=20.0.0}
+
   napi-build-utils@2.0.0:
     resolution: {integrity: sha512-GEbrYkbfF7MoNaoh2iGG84Mnf/WZfB0GdGEsM8wz7Expx/LlWf5U8t9nvJKXSp3qr5IsEbK04cBGhol/KwOsWA==}
 
@@ -6835,6 +6852,11 @@ snapshots:
       - encoding
       - supports-color
     optional: true
+
+  '@nanostores/react@0.8.4(nanostores@0.11.4)(react@19.0.0)':
+    dependencies:
+      nanostores: 0.11.4
+      react: 19.0.0
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
@@ -10218,6 +10240,8 @@ snapshots:
   nanoid@3.3.8: {}
 
   nanoid@5.1.0: {}
+
+  nanostores@0.11.4: {}
 
   napi-build-utils@2.0.0: {}
 

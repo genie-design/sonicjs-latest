@@ -1,6 +1,6 @@
 ---
 import Layout from './Layout.astro';
-
+import Menu from '@/components/Menu.astro';
 interface Props {
   title?: string;
 }
@@ -12,18 +12,7 @@ const { title = 'Content' } = Astro.props;
   <div class="relative min-h-screen">
     <!-- Main Layout Grid -->
     <div class="grid min-h-screen gap-4 p-4 lg:grid-cols-[250px_1fr]">
-      <!-- Left Sidebar -->
-      <div class="hidden space-y-4 lg:block">
-        <slot name="left-sidebar">
-          <div class="bg-base-200/50 rounded-2xl p-6 backdrop-blur-sm">
-            <h2 class="mb-4 text-xl font-bold">Welcome</h2>
-            <p class="text-base-content/80">
-              Join our community to access all features.
-            </p>
-          </div>
-        </slot>
-      </div>
-
+      <Menu />
       <!-- Main Content Area -->
       <main
         class="bg-secondary flex min-h-[80vh] flex-col items-center gap-8 rounded-3xl p-8 backdrop-blur-sm"
