@@ -10,14 +10,14 @@ SonicJS is a revolutionary Content Management System (CMS) built for the modern 
 
 ### Key Features
 
-- [x] 🔐 **Authentication**: Robust user authentication system with multiple providers
-- [x] 🛡️ **Access Control**: Fine-grained permissions and role-based access control
-- [ ] 🏠 **Local First Architecture**: Work offline with full functionality, sync when connected
-- [ ] 🤖 **AI Integration**: Built-in AI capabilities for content enhancement and management
+- [ ] 🔐 **Authentication**: Robust user authentication system with multiple providers
+- [ ] 🛡️ **Access Control**: Fine-grained permissions and role-based access control
+- [x] 🏠 **Local First Architecture**: Work offline with full functionality, sync when connected
+- [ ] 🤖 **AI Integration**: Built-in AI capabilities for content enhancement, searching and management
 - [ ] ☁️ **Cloudflare Hosted**: Global edge deployment for optimal performance
 - [ ] 👥 **Real-time Multiplayer**: Collaborative content editing and management
-- [ ] 🔄 **Offline Support**: Continue working without internet connection
-- [ ] ⚡ **Performance Focused**: Built with speed and efficiency in mind
+- [x] 🔄 **Offline Support**: Continue working without internet connection
+- [x] ⚡ **Performance Focused**: Built with speed and efficiency in mind
 
 
 ## 🚀 Getting Started
