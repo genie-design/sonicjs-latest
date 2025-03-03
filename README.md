@@ -20,6 +20,11 @@ SonicJS is a revolutionary Content Management System (CMS) built for the modern 
 - [x] 🔄 **Offline Support**: Continue working without internet connection
 - [x] ⚡ **Performance Focused**: Built with speed and efficiency in mind
 
+## 📦 Project Structure
+
+- /sonic: Upcoming Local-first work in progress front end that uses tinybase.
+- /cms: Original front end that had more server use.
+- /tinybase-server: Handles content management using tinybase.
 
 ## 🚀 Getting Started
 
