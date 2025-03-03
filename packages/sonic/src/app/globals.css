@@ -1,24 +1,64 @@
 @import "tailwindcss";
+@plugin "daisyui";
+@plugin "daisyui/theme" {
+  name: 'sonic';
+  default: true;
+  prefersdark: true;
+  color-scheme: dark;
 
+  /* Base colors - dark gray-blue from Sonic theme */
+  --color-base-100: oklch(30% 0.032 264.7); /* RGB(17, 24, 39) */
+  --color-base-200: oklch(16% 0.032 264.7); /* Adjusted darker */
+  --color-base-300: oklch(12% 0.032 264.7); /* Adjusted darkest */
+  --color-base-content: oklch(98% 0 0); /* White text */
+
+  /* Primary - Sonic gold */
+  --color-primary: oklch(85.2% 0.17 87); /* RGB(255, 197, 3) */
+  --color-primary-content: oklch(10% 0.01 255); /* Dark text on primary */
+
+  /* Secondary - complementary blue */
+  --color-secondary: oklch(50% 0.2 255); /* Slightly darker blue */
+  --color-secondary-content: oklch(98% 0 0);
+
+  /* Accent - electric cyan */
+  --color-accent: oklch(70% 0.2 195); /* Bright electric cyan */
+  --color-accent-content: oklch(10% 0.01 255); /* Dark text on accent */
+
+  /* Neutral - deeper base */
+  --color-neutral: oklch(8% 0.01 255); /* Slightly darker than base */
+  --color-neutral-content: oklch(98% 0 0);
+
+  /* Status colors */
+  --color-info: oklch(60% 0.2 255); /* Blue */
+  --color-info-content: oklch(98% 0 0);
+
+  --color-success: oklch(70% 0.15 145); /* Green */
+  --color-success-content: oklch(98% 0 0);
+
+  --color-warning: oklch(85% 0.2 85); /* Same as primary (gold) */
+  --color-warning-content: oklch(10% 0.01 255);
+
+  --color-error: oklch(65% 0.25 30); /* Red */
+  --color-error-content: oklch(98% 0 0);
+
+  /* border radius */
+  --radius-selector: 0.5rem;
+  --radius-field: 0.5rem;
+  --radius-box: 0.5rem;
+
+  /* base sizes */
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+
+  /* border size */
+  --border: 1px;
+
+  /* effects */
+  --depth: 1;
+  --noise: 0;
+}
 @theme {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-}
