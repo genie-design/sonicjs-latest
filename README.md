@@ -1,6 +1,7 @@
 # SonicJS - Local First AI-Friendly CMS
 
 ![SonicJS Early Development](https://github.com/genie-design/sonicjs-latest/blob/main/assets/sonic-early.png)
+![Screenshot 2025-03-02 184848](https://github.com/user-attachments/assets/293a6c88-e995-49c3-af90-26a82e6072ff)
 
 > ⚠️ **Early Development Notice**: SonicJS is currently in very early development. Features and APIs may change significantly.
 
